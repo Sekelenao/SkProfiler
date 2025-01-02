@@ -2,7 +2,8 @@ package io.github.sekelenao.skprofiler.http;
 
 public enum HttpStatus {
 
-    SUCCESS(200);
+    SUCCESS(200),
+    NOT_FOUND(404);
 
     private final int code;
 
