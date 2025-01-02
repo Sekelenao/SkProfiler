@@ -9,6 +9,9 @@
   A Lightweight, dependency-free Java agent for profiling at runtime
 </h3>
 <h3 align="center">
+  Development in progress
+</h3>
+<h3 align="center">
   Java 23+
 </h3>
 
