@@ -2,25 +2,36 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import io.github.sekelenao.skprofiler.http.HttpResponse;
 import io.github.sekelenao.skprofiler.json.CustomJsonInterpreter;
+import io.github.sekelenao.skprofiler.util.ByteStreams;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public interface Endpoint extends HttpHandler {
 
     String route();
 
-    BodyResponse process(InputStream requestBody);
+    default HttpResponse processGetRequest() {
+        return HttpResponse.notFound();
+    }
+
+    default HttpResponse processPostRequest(String requestBody){
+        return HttpResponse.notFound();
+    }
 
     @Override
     default void handle(HttpExchange exchange) throws IOException {
-        var response = process(exchange.getRequestBody());
-        var body = CustomJsonInterpreter.serialize(response.body()).getBytes();
-        exchange.sendResponseHeaders(response.status().code(), body.length);
-        try (var outputStream = exchange.getResponseBody()) {
-            outputStream.write(body);
-        }
+        var response = switch (exchange.getRequestMethod()){
+          case "GET" -> processGetRequest();
+          case "POST" -> processPostRequest(ByteStreams.readFromInputStream(exchange::getRequestBody));
+          default -> HttpResponse.notFound();
+        };
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, PUT");
+        var responseBody = response.body().map(CustomJsonInterpreter::serialize).orElse("").getBytes();
+        exchange.sendResponseHeaders(response.status().code(), responseBody.length);
+        ByteStreams.writeOnOutputStream(exchange::getResponseBody, responseBody);
     }
 
 }
