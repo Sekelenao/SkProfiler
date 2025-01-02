@@ -1,9 +1,7 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
-import io.github.sekelenao.skprofiler.http.HttpStatus;
+import io.github.sekelenao.skprofiler.http.HttpResponse;
 import io.github.sekelenao.skprofiler.http.dto.StatusDTO;
-
-import java.io.InputStream;
 
 public final class StatusEndpoint implements Endpoint {
 
@@ -13,8 +11,8 @@ public final class StatusEndpoint implements Endpoint {
     }
 
     @Override
-    public BodyResponse process(InputStream requestBody) {
-        return new BodyResponse(HttpStatus.SUCCESS, new StatusDTO(true));
+    public HttpResponse processGetRequest() {
+        return HttpResponse.success(new StatusDTO(true));
     }
 
 }
