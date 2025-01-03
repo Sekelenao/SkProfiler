@@ -6,7 +6,7 @@
   SkProfiler
 </h1>
 <h3 align="center">
-  A Lightweight, dependency-free Java agent for profiling at runtime
+  A Lightweight, dependency-free Java HTTP agent for profiling at runtime
 </h3>
 <h3 align="center">
   Development in progress
