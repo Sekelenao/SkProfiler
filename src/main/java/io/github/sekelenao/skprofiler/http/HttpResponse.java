@@ -1,5 +1,7 @@
 package io.github.sekelenao.skprofiler.http;
 
+import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,7 +13,13 @@ public record HttpResponse(HttpStatus status, Optional<Record> body) {
     }
 
     public static HttpResponse notFound(){
-        return new HttpResponse(HttpStatus.NOT_FOUND, Optional.empty());
+        return new HttpResponse(HttpStatus.NOT_FOUND,
+                Optional.of(
+                        new MessageDTO(
+                                "The requested resource does not exist"
+                        )
+                )
+        );
     }
 
     public static HttpResponse success(Record body){

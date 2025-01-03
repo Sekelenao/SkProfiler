@@ -1,7 +1,7 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
 import io.github.sekelenao.skprofiler.http.HttpResponse;
-import io.github.sekelenao.skprofiler.http.dto.StatusDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
 
 public final class StatusEndpoint implements Endpoint {
 
