@@ -22,11 +22,14 @@ public interface Endpoint extends HttpHandler {
 
     @Override
     default void handle(HttpExchange exchange) throws IOException {
-        var response = switch (exchange.getRequestMethod()){
-          case "GET" -> processGetRequest();
-          case "POST" -> processPostRequest(ByteStreams.readFromInputStream(exchange::getRequestBody));
-          default -> HttpResponse.notFound();
-        };
+        var response = HttpResponse.notFound();
+        if(exchange.getRequestURI().getPath().equals(route())){
+            response = switch (exchange.getRequestMethod()){
+                case "GET" -> processGetRequest();
+                case "POST" -> processPostRequest(ByteStreams.readFromInputStream(exchange::getRequestBody));
+                default -> HttpResponse.notFound();
+            };
+        }
         exchange.getResponseHeaders().set("Content-Type", "application/json");
         exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, PUT");
         var responseBody = response.body().map(CustomJsonInterpreter::serialize).orElse("").getBytes();
