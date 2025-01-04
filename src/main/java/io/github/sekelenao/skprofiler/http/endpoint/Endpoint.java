@@ -13,11 +13,11 @@ public interface Endpoint extends HttpHandler {
     String route();
 
     default HttpResponse processGetRequest() {
-        return HttpResponse.notFound();
+        return HttpResponse.methodNotAllowed();
     }
 
     default HttpResponse processPostRequest(String requestBody){
-        return HttpResponse.notFound();
+        return HttpResponse.methodNotAllowed();
     }
 
     @Override
@@ -26,8 +26,10 @@ public interface Endpoint extends HttpHandler {
         if(exchange.getRequestURI().getPath().equals(route())){
             response = switch (exchange.getRequestMethod()){
                 case "GET" -> processGetRequest();
-                case "POST" -> processPostRequest(ByteStreams.readFromInputStream(exchange::getRequestBody));
-                default -> HttpResponse.notFound();
+                case "POST" -> processPostRequest(
+                        ByteStreams.readFromInputStream(exchange::getRequestBody)
+                );
+                default -> HttpResponse.methodNotAllowed();
             };
         }
         exchange.getResponseHeaders().set("Content-Type", "application/json");

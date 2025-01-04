@@ -22,6 +22,16 @@ public record HttpResponse(HttpStatus status, Optional<Record> body) {
         );
     }
 
+    public static HttpResponse methodNotAllowed(){
+        return new HttpResponse(HttpStatus.METHOD_NOT_ALLOWED,
+                Optional.of(
+                        new MessageDTO(
+                                "The requested HTTP method is not allowed for this resource."
+                        )
+                )
+        );
+    }
+
     public static HttpResponse success(Record body){
         Objects.requireNonNull(body);
         return new HttpResponse(HttpStatus.SUCCESS, Optional.of(body));

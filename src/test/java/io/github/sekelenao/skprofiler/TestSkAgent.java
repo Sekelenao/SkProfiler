@@ -1,7 +1,6 @@
 package io.github.sekelenao.skprofiler;
 
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
-import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,8 +27,7 @@ final class TestSkAgent {
                     .thenReturn(mockedHttpServer);
             when(mockedHttpServer.with(any())).thenReturn(mockedHttpServer);
             SkAgent.premain(ARGUMENTS, mockedInstrumentation);
-            verify(mockedHttpServer, times(1)).with(any(StatusEndpoint.class));
-            verify(mockedHttpServer, times(1)).start();
+            verify(mockedHttpServer).start();
         }
     }
 

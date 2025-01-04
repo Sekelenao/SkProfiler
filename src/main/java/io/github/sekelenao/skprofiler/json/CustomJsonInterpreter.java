@@ -3,7 +3,9 @@ package io.github.sekelenao.skprofiler.json;
 import io.github.sekelenao.skprofiler.exception.InvalidJsonFormatException;
 
 import java.lang.reflect.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.regex.Pattern;
