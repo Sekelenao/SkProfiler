@@ -7,7 +7,7 @@ import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestByteStreams {
+final class TestByteStreams {
 
     @Test
     @DisplayName("Read from InputStream assertions")

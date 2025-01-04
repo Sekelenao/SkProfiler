@@ -24,6 +24,7 @@ public final class SkAgent {
                     .start();
         } catch (IOException exception) {
             LOGGER.severe("Encountered IOException: " + exception);
+            throw new IllegalStateException(exception);
         }
     }
 
