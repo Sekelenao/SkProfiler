@@ -23,8 +23,8 @@ public final class SkAgent {
                     .with(new StatusEndpoint())
                     .start();
         } catch (IOException exception) {
-            LOGGER.severe("Encountered IOException: " + exception);
-            throw new IllegalStateException(exception);
+            LOGGER.severe("Encountered IOException during starting process: " + exception);
+            throw new AssertionError(exception);
         }
     }
 

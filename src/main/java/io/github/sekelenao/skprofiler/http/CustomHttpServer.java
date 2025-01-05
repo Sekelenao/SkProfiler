@@ -46,12 +46,17 @@ public final class CustomHttpServer {
         return this;
     }
 
-    public void start(){
+    public CustomHttpServer start(){
         server.start();
         LOGGER.info(
                 "HttpServer started on port: {0}",
                 String.valueOf(server.getAddress().getPort())
         );
+        return this;
+    }
+
+    public void stop(){
+        server.stop(1);
     }
 
 }
