@@ -20,16 +20,16 @@ public final class CustomHttpServer {
     }
 
     public static int parsePort(String portAsString) {
-        if(Objects.isNull(portAsString)){
+        if(portAsString == null || portAsString.isBlank()){
             LOGGER.severe("No port was provided for the HttpServer. Please read documentation for more information.");
-            throw new AssertionError();
+            throw new IllegalArgumentException();
         }
         try {
             var port = Integer.parseInt(portAsString);
             Assertions.checkPort(port);
             return port;
-        } catch (NumberFormatException exception) {
-            LOGGER.severe("Provided port is not a valid port.\nEncountered the following Exception: {0}", exception);
+        } catch (IllegalArgumentException exception) {
+            LOGGER.severe("Provided port is not a valid port. Encountered the following Exception: {0}", exception);
             throw new IllegalArgumentException();
         }
     }

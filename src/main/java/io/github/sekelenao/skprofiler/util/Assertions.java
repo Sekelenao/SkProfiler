@@ -8,7 +8,7 @@ public final class Assertions {
 
     public static void checkPort(int port){
         if(port < 0 || port > 65535) {
-            throw new NumberFormatException("Wrong port were provided: " + port);
+            throw new IllegalArgumentException("Wrong port was provided: " + port);
         }
     }
 
