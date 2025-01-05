@@ -16,11 +16,11 @@ public class CustomLoggingFormatter extends Formatter {
 
     private static final String YELLOW = "\u001B[33m";
 
-    public static final String CYAN = "\u001B[36m";
+    private static final String CYAN = "\u001B[36m";
 
-    public static final String PURPLE = "\u001B[35m";
+    private static final String PURPLE = "\u001B[35m";
 
-    public static final String GRAY = "\u001B[37m";
+    private static final String GRAY = "\u001B[37m";
 
     private static final String RESET = "\u001B[0m";
 
