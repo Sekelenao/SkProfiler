@@ -1,5 +1,6 @@
 package io.github.sekelenao.skprofiler.http;
 
+import com.sun.net.httpserver.Headers;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 
 import java.util.Objects;
@@ -10,6 +11,12 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
     public CustomHttpResponse {
         Objects.requireNonNull(status);
         Objects.requireNonNull(body);
+    }
+
+    public static void modifyHeaders(Headers headers){
+        Objects.requireNonNull(headers);
+        headers.set("Content-Type", "application/json");
+        headers.set("Access-Control-Allow-Methods", "GET, PUT");
     }
 
     public static CustomHttpResponse notFound(){

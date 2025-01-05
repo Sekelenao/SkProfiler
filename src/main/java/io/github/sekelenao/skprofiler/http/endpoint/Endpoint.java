@@ -32,8 +32,7 @@ public interface Endpoint extends HttpHandler {
                 default -> CustomHttpResponse.methodNotAllowed();
             };
         }
-        exchange.getResponseHeaders().set("Content-Type", "application/json");
-        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, PUT");
+        CustomHttpResponse.modifyHeaders(exchange.getResponseHeaders());
         var responseBody = response.body().map(CustomJsonInterpreter::serialize).orElse("").getBytes();
         exchange.sendResponseHeaders(response.status().code(), responseBody.length);
         ByteStreams.writeOnOutputStream(exchange::getResponseBody, responseBody);
