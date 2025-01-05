@@ -2,7 +2,7 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import io.github.sekelenao.skprofiler.http.HttpResponse;
+import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,8 +36,8 @@ final class TestEndpoint {
         }
 
         @Override
-        public HttpResponse processGetRequest() {
-            return HttpResponse.success(new MessageDTO("Hello world !"));
+        public CustomHttpResponse processGetRequest() {
+            return CustomHttpResponse.success(new MessageDTO("Hello world !"));
         }
 
     };

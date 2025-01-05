@@ -1,6 +1,6 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
-import io.github.sekelenao.skprofiler.http.HttpResponse;
+import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
 import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
 import io.github.sekelenao.skprofiler.system.SystemProperties;
 import org.junit.jupiter.api.DisplayName;
@@ -26,13 +26,13 @@ final class TestStatusEndpoint {
             mockedStatic.when(SystemProperties::javaVersion).thenReturn(javaVersion);
             assertAll(
                     () -> assertEquals(
-                            HttpResponse.success(new StatusDTO(command, javaVersion)),
+                            CustomHttpResponse.success(new StatusDTO(command, javaVersion)),
                             statusEndpoint.processGetRequest()
                     ),
                     () -> {
                         mockedStatic.when(SystemProperties::command).thenReturn(Optional.empty());
                         assertEquals(
-                                HttpResponse.success(new StatusDTO("Unknown", javaVersion)),
+                                CustomHttpResponse.success(new StatusDTO("Unknown", javaVersion)),
                                 statusEndpoint.processGetRequest()
                         );
                     }

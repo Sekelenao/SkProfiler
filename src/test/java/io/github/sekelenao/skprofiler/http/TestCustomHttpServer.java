@@ -5,6 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,10 +28,21 @@ final class TestCustomHttpServer {
 
     @Test
     @DisplayName("CustomHttpServer is starting then stopping")
-    void test() throws IOException {
+    void customHttpServerIsStartingThenStopping() throws IOException {
         var server = CustomHttpServer.bind(8081).with(new StatusEndpoint());
         assertDoesNotThrow(server::start);
-        assertDoesNotThrow(server::stop);
+        try (var client = java.net.http.HttpClient.newHttpClient()) {
+            var request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8081/status")).GET().build();
+            var response = assertDoesNotThrow(
+                    () -> client.send(request, HttpResponse.BodyHandlers.ofString())
+            );
+            assertAll(
+                    () -> assertEquals(200, response.statusCode()),
+                    () -> assertNotNull(response.body()),
+                    () -> assertFalse(response.body().isEmpty()),
+                    () -> assertDoesNotThrow(server::stop)
+            );
+        }
     }
 
 }
