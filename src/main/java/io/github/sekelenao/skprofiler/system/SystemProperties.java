@@ -1,6 +1,5 @@
 package io.github.sekelenao.skprofiler.system;
 
-import java.util.Objects;
 import java.util.Optional;
 
 public final class SystemProperties {
@@ -11,7 +10,7 @@ public final class SystemProperties {
 
     public static String javaVersion(){
         var version = System.getProperty("java.version");
-        if(Objects.isNull(version)){
+        if(version == null){
             throw new AssertionError("Java version is null");
         }
         return version;

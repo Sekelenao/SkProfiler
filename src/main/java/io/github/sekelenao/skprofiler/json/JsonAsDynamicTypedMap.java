@@ -59,7 +59,7 @@ final class JsonAsDynamicTypedMap {
         Objects.requireNonNull(key);
         Objects.requireNonNull(targetType);
         var value = dynamicMap.get(key);
-        if(Objects.isNull(value)){
+        if(value == null){
             throw new NoSuchElementException(key);
         }
         return transformValueIntoTargetType(value, targetType);
