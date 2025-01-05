@@ -19,6 +19,19 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
         headers.set("Access-Control-Allow-Methods", "GET, PUT");
     }
 
+    public static CustomHttpResponse success(Record body){
+        Objects.requireNonNull(body);
+        return new CustomHttpResponse(HttpStatus.SUCCESS, Optional.of(body));
+    }
+
+    public static CustomHttpResponse badRequest(){
+        return new CustomHttpResponse(HttpStatus.BAD_REQUEST,
+                Optional.of(
+                        new MessageDTO("Invalid parameters or malformed request, please check documentation")
+                )
+        );
+    }
+
     public static CustomHttpResponse notFound(){
         return new CustomHttpResponse(HttpStatus.NOT_FOUND,
                 Optional.of(
@@ -33,15 +46,10 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
         return new CustomHttpResponse(HttpStatus.METHOD_NOT_ALLOWED,
                 Optional.of(
                         new MessageDTO(
-                                "The requested HTTP method is not allowed for this resource."
+                                "The requested HTTP method is not allowed for this resource"
                         )
                 )
         );
-    }
-
-    public static CustomHttpResponse success(Record body){
-        Objects.requireNonNull(body);
-        return new CustomHttpResponse(HttpStatus.SUCCESS, Optional.of(body));
     }
 
 }

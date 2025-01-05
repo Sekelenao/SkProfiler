@@ -127,7 +127,7 @@ final class TestEndpoint {
                 () -> assertDoesNotThrow(() -> verify(mockedExchange).sendResponseHeaders(eq(405), anyLong())),
                 () -> assertEquals("application/json", capturedHeaders.get("Content-Type")),
                 () -> assertEquals(
-                        "{\"message\":\"The requested HTTP method is not allowed for this resource.\"}",
+                        "{\"message\":\"The requested HTTP method is not allowed for this resource\"}",
                         mockedResponseOutput.toString()
                 )
         );
