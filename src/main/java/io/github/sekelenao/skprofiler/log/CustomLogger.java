@@ -52,8 +52,13 @@ public final class CustomLogger {
          ___/ / ,< / ____/ /  / /_/ / __/ / /  __/ /
         /____/_/|_/_/   /_/   \\____/_/ /_/_/\\___/_/
         """);
-        logger.info("Agent is starting within the target application: {0}", EnvironmentProperties.command().orElse("Unknown"));
-        logger.info("Actually running with the following Java version: {0}", EnvironmentProperties.javaVersion());
+        logger.info(
+                "Agent is starting within the target application: {0}",
+                EnvironmentProperties.command().orElse("Unknown")
+        );
+        logger.info(
+                "Actually running with the following Java version: {0}",
+                EnvironmentProperties.javaVersion().orElse("Unknown"));
     }
 
 }
