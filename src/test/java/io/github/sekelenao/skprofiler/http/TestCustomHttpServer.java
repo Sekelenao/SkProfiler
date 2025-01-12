@@ -1,5 +1,7 @@
 package io.github.sekelenao.skprofiler.http;
 
+import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
+import io.github.sekelenao.skprofiler.http.endpoint.Endpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,11 +31,12 @@ final class TestCustomHttpServer {
     @Test
     @DisplayName("CustomHttpServer is starting then stopping")
     void customHttpServerIsStartingThenStopping() throws IOException {
-        var server = CustomHttpServer.bind(0).with(new StatusEndpoint());
+        var endpoint = new StatusEndpoint();
+        var server = CustomHttpServer.bind(0).with(endpoint);
         assertDoesNotThrow(server::start);
         try (var client = java.net.http.HttpClient.newHttpClient()) {
             var request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:" + server.port() + "/status"))
+                    .uri(URI.create("http://localhost:" + server.port() + endpoint.route()))
                     .GET()
                     .build();
             var response = assertDoesNotThrow(
@@ -41,6 +44,44 @@ final class TestCustomHttpServer {
             );
             assertAll(
                     () -> assertEquals(200, response.statusCode()),
+                    () -> assertNotNull(response.body()),
+                    () -> assertFalse(response.body().isEmpty()),
+                    () -> assertDoesNotThrow(server::stop)
+            );
+        }
+    }
+
+    @Test
+    @DisplayName("Exception in endpoint is converted to InternalServerError")
+    void exceptionInControllerIsStopped() throws IOException {
+        var endpoint = new Endpoint(){
+
+            @Override
+            public String route() {
+                return "/exception";
+            }
+
+            @Override
+            @SuppressWarnings("all")
+            public CustomHttpResponse processGetRequest() {
+                Integer.parseInt("impossible");
+                return CustomHttpResponse.success(new MessageDTO("Exception"));
+            }
+
+        };
+        var server = CustomHttpServer.bind(0).with(endpoint);
+        assertDoesNotThrow(server::start);
+        try (var client = java.net.http.HttpClient.newHttpClient()) {
+            var request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:" + server.port() + endpoint.route()))
+                    .GET()
+                    .build();
+
+            var response = assertDoesNotThrow(
+                    () -> client.send(request, HttpResponse.BodyHandlers.ofString())
+            );
+            assertAll(
+                    () -> assertEquals(500, response.statusCode()),
                     () -> assertNotNull(response.body()),
                     () -> assertFalse(response.body().isEmpty()),
                     () -> assertDoesNotThrow(server::stop)

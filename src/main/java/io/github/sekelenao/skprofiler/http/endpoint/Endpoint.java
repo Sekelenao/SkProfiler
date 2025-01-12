@@ -3,6 +3,7 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
+import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.json.CustomJsonInterpreter;
 import io.github.sekelenao.skprofiler.util.ByteStreams;
 
@@ -22,15 +23,16 @@ public interface Endpoint extends HttpHandler {
 
     @Override
     default void handle(HttpExchange exchange) throws IOException {
+        CustomHttpServer.LOGGER.info("Processing " + exchange.getRequestMethod() + " request on " + route());
         var response = CustomHttpResponse.notFound();
         if(exchange.getRequestURI().getPath().equals(route())){
-            response = switch (exchange.getRequestMethod()){
+            response = CustomHttpResponse.safeProcess(() -> switch (exchange.getRequestMethod()){
                 case "GET" -> processGetRequest();
                 case "POST" -> processPostRequest(
                         ByteStreams.readFromInputStream(exchange::getRequestBody)
                 );
                 default -> CustomHttpResponse.methodNotAllowed();
-            };
+            }, route());
         }
         CustomHttpResponse.modifyHeaders(exchange.getResponseHeaders());
         var responseBody = response.body().map(CustomJsonInterpreter::serialize).orElse("").getBytes();

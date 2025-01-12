@@ -3,8 +3,10 @@ package io.github.sekelenao.skprofiler.http;
 import com.sun.net.httpserver.Headers;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
 
@@ -50,6 +52,34 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
                         )
                 )
         );
+    }
+
+    public static CustomHttpResponse internalServerError(){
+        return new CustomHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                Optional.of(
+                        new MessageDTO(
+                                "An internal error occurred during processing"
+                        )
+                )
+        );
+    }
+
+    public static CustomHttpResponse safeProcess(RequestProcessor processor, String route){
+        Objects.requireNonNull(processor);
+        try {
+            return processor.response();
+        } catch (Exception exception) {
+            CustomHttpServer.LOGGER.warning(
+                    "Encountered Exception during request processing on {0}: {1}{2}",
+                    route,
+                    exception,
+                    Arrays.stream(exception.getStackTrace())
+                            .limit(15)
+                            .map(StackTraceElement::toString)
+                            .collect(Collectors.joining("\n\tat ", "\n\tat ", "\n\t..."))
+            );
+            return CustomHttpResponse.internalServerError();
+        }
     }
 
 }
