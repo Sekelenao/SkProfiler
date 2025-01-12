@@ -51,7 +51,7 @@ final class TestEndpoint {
     }
 
     @Test
-    @DisplayName("Endpoints http processing is working")
+    @DisplayName("Endpoints HTTP processing is working")
     void httpProcessingIsWorking() throws Exception {
 
         // Fake exchange
