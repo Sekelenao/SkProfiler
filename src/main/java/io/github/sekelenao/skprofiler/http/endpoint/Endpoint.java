@@ -3,7 +3,6 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
-import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.json.CustomJsonInterpreter;
 import io.github.sekelenao.skprofiler.util.ByteStreams;
 

@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public final class CustomHttpServer {
 
-    public static final CustomLogger LOGGER = CustomLogger.on(CustomHttpServer.class);
+    static final CustomLogger LOGGER = CustomLogger.on(CustomHttpServer.class);
 
     private final HttpServer server;
 
