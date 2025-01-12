@@ -55,6 +55,10 @@ public final class CustomHttpServer {
         return this;
     }
 
+    public int port(){
+        return server.getAddress().getPort();
+    }
+
     public void stop(){
         server.stop(1);
     }
