@@ -23,7 +23,6 @@ public interface Endpoint extends HttpHandler {
 
     @Override
     default void handle(HttpExchange exchange) throws IOException {
-        CustomHttpServer.LOGGER.info("Processing " + exchange.getRequestMethod() + " request on " + route());
         var response = CustomHttpResponse.notFound();
         if(exchange.getRequestURI().getPath().equals(route())){
             response = CustomHttpResponse.safeProcess(() -> switch (exchange.getRequestMethod()){
