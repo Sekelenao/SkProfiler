@@ -29,19 +29,19 @@ final class TestDurations {
                         Durations.asHumanReadable(complete)
                 ),
                 () -> assertEquals(
-                        "1h 0m 0s 0ms",
+                        "0d 1h 0m 0s 0ms",
                         Durations.asHumanReadable(oneHour)
                 ),
                 () -> assertEquals(
-                        "1m 0s 0ms",
+                        "0d 0h 1m 0s 0ms",
                         Durations.asHumanReadable(oneMinute)
                 ),
                 () -> assertEquals(
-                        "1s 0ms",
+                        "0d 0h 0m 1s 0ms",
                         Durations.asHumanReadable(oneSecond)
                 ),
                 () -> assertEquals(
-                        "1ms",
+                        "0d 0h 0m 0s 1ms",
                         Durations.asHumanReadable(oneMillisecond)
                 )
         );
