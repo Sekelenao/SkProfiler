@@ -29,10 +29,13 @@ final class TestCustomHttpServer {
     @Test
     @DisplayName("CustomHttpServer is starting then stopping")
     void customHttpServerIsStartingThenStopping() throws IOException {
-        var server = CustomHttpServer.bind(8081).with(new StatusEndpoint());
+        var server = CustomHttpServer.bind(0).with(new StatusEndpoint());
         assertDoesNotThrow(server::start);
         try (var client = java.net.http.HttpClient.newHttpClient()) {
-            var request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8081/status")).GET().build();
+            var request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:" + server.port() + "/status"))
+                    .GET()
+                    .build();
             var response = assertDoesNotThrow(
                     () -> client.send(request, HttpResponse.BodyHandlers.ofString())
             );
