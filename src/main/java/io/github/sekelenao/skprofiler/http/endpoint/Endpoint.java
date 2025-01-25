@@ -20,6 +20,10 @@ public interface Endpoint extends HttpHandler {
         return CustomHttpResponse.methodNotAllowed();
     }
 
+    default CustomHttpResponse processDeleteRequest(){
+        return CustomHttpResponse.methodNotAllowed();
+    }
+
     @Override
     default void handle(HttpExchange exchange) throws IOException {
         var response = CustomHttpResponse.notFound();
@@ -29,6 +33,7 @@ public interface Endpoint extends HttpHandler {
                 case "POST" -> processPostRequest(
                         ByteStreams.readFromInputStream(exchange::getRequestBody)
                 );
+                case "DELETE" -> processDeleteRequest();
                 default -> CustomHttpResponse.methodNotAllowed();
             }, route());
         }
