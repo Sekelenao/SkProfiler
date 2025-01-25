@@ -1,6 +1,7 @@
 package io.github.sekelenao.skprofiler;
 
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
+import io.github.sekelenao.skprofiler.http.endpoint.HomeEndpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.SelfDestructEndpoint;
 import io.github.sekelenao.skprofiler.log.CustomLogger;
@@ -21,7 +22,8 @@ public final class SkAgent {
             CustomLogger.displayBannerAndStartingLogs(LOGGER);
             var port = CustomHttpServer.parsePort(arguments);
             var server = CustomHttpServer.bind(port);
-            server.with(new StatusEndpoint())
+            server.with(new HomeEndpoint())
+                    .with(new StatusEndpoint())
                     .with(new SelfDestructEndpoint(server::stop))
                     .start();
         } catch (IOException exception) {
