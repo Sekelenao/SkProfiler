@@ -7,11 +7,16 @@ import io.github.sekelenao.skprofiler.util.Assertions;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public final class CustomHttpServer {
 
-    static final CustomLogger LOGGER = CustomLogger.on(CustomHttpServer.class);
+    private static final CustomLogger LOGGER = CustomLogger.on(CustomHttpServer.class);
+
+    private volatile boolean stopped = false;
 
     private final HttpServer server;
 
@@ -60,7 +65,20 @@ public final class CustomHttpServer {
     }
 
     public void stop(){
-        server.stop(1);
+        if(!stopped){
+            stopped = true;
+            var timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    server.stop(5);
+                    LOGGER.info("HttpServer stopped successfully");
+                }
+            };
+            new Timer().schedule(
+                    timerTask,
+                    Duration.ofSeconds(5).toMillis()
+            );
+        }
     }
 
 }

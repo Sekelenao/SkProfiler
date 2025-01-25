@@ -3,13 +3,16 @@ package io.github.sekelenao.skprofiler.http;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 import io.github.sekelenao.skprofiler.http.endpoint.Endpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +29,14 @@ final class TestCustomHttpServer {
                 () -> assertThrows(IllegalArgumentException.class, () -> CustomHttpServer.parsePort("4585654")),
                 () -> assertThrows(IllegalArgumentException.class, () -> CustomHttpServer.parsePort("8081F"))
         );
+    }
+
+    private static boolean portNotReachable(int port) {
+        try (Socket _ = new Socket("localhost", port)){
+            return false;
+        } catch (IOException e) {
+            return true;
+        }
     }
 
     @Test
@@ -46,7 +57,10 @@ final class TestCustomHttpServer {
                     () -> assertEquals(200, response.statusCode()),
                     () -> assertNotNull(response.body()),
                     () -> assertFalse(response.body().isEmpty()),
-                    () -> assertDoesNotThrow(server::stop)
+                    () -> assertDoesNotThrow(server::stop),
+                    () -> Awaitility.await().atMost(10, TimeUnit.SECONDS).until(
+                            () -> portNotReachable(server.port())
+                    )
             );
         }
     }

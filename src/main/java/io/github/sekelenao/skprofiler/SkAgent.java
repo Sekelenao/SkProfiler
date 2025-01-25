@@ -2,6 +2,7 @@ package io.github.sekelenao.skprofiler;
 
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
+import io.github.sekelenao.skprofiler.http.endpoint.SelfDestructEndpoint;
 import io.github.sekelenao.skprofiler.log.CustomLogger;
 
 import java.io.IOException;
@@ -19,8 +20,9 @@ public final class SkAgent {
         try {
             CustomLogger.displayBannerAndStartingLogs(LOGGER);
             var port = CustomHttpServer.parsePort(arguments);
-            CustomHttpServer.bind(port)
-                    .with(new StatusEndpoint())
+            var server = CustomHttpServer.bind(port);
+            server.with(new StatusEndpoint())
+                    .with(new SelfDestructEndpoint(server::stop))
                     .start();
         } catch (IOException exception) {
             LOGGER.severe("Encountered IOException during starting process: " + exception);
