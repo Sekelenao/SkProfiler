@@ -9,6 +9,20 @@ import java.util.logging.Logger;
 
 public final class CustomLogger {
 
+    private static final ClassValue<CustomLogger> LOGGER_CACHE = new ClassValue<>() {
+
+        @Override
+        protected CustomLogger computeValue(Class<?> clazz) {
+            var newLogger = Logger.getLogger(clazz.getName());
+            newLogger.setUseParentHandlers(false);
+            ConsoleHandler handler = new ConsoleHandler();
+            handler.setFormatter(new CustomLoggingFormatter());
+            newLogger.addHandler(handler);
+            return new CustomLogger(newLogger);
+        }
+
+    };
+
     private final Logger logger;
 
     public CustomLogger(Logger logger) {
@@ -18,12 +32,7 @@ public final class CustomLogger {
 
     public static CustomLogger on(Class<?> clazz){
         Objects.requireNonNull(clazz);
-        var logger = Logger.getLogger(clazz.getName());
-        logger.setUseParentHandlers(false);
-        ConsoleHandler handler = new ConsoleHandler();
-        handler.setFormatter(new CustomLoggingFormatter());
-        logger.addHandler(handler);
-        return new CustomLogger(logger);
+        return LOGGER_CACHE.get(clazz);
     }
 
     public void info(String message, Object... parameters) {

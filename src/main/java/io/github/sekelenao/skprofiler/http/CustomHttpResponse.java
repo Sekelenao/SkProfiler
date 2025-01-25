@@ -2,6 +2,7 @@ package io.github.sekelenao.skprofiler.http;
 
 import com.sun.net.httpserver.Headers;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
+import io.github.sekelenao.skprofiler.log.CustomLogger;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -9,6 +10,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
+
+    private static final CustomLogger LOGGER = CustomLogger.on(CustomHttpServer.class);
 
     public CustomHttpResponse {
         Objects.requireNonNull(status);
@@ -69,7 +72,7 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
         try {
             return processor.response();
         } catch (Exception exception) {
-            CustomHttpServer.LOGGER.warning(
+            LOGGER.warning(
                     "Encountered Exception during request processing on {0}: {1}{2}",
                     route,
                     exception,
