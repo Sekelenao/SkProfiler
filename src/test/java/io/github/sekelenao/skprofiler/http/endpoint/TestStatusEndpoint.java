@@ -5,7 +5,7 @@ import io.github.sekelenao.skprofiler.http.dto.send.JavaDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.JavaVirtualMachineDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
-import io.github.sekelenao.skprofiler.util.Durations;
+import io.github.sekelenao.skprofiler.util.Units;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -50,7 +50,7 @@ final class TestStatusEndpoint {
                                                     vmName,
                                                     vmVersion,
                                                     vmVendor,
-                                                    Durations.asHumanReadable(duration)
+                                                    Units.durationAsHumanReadable(duration)
                                             )
                                     )
                             ),
@@ -69,7 +69,7 @@ final class TestStatusEndpoint {
                                                         vmName,
                                                         vmVersion,
                                                         vmVendor,
-                                                        Durations.asHumanReadable(duration)
+                                                        Units.durationAsHumanReadable(duration)
                                                 )
                                         )
                                 ), statusEndpoint.processGetRequest());

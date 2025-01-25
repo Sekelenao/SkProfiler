@@ -5,7 +5,7 @@ import io.github.sekelenao.skprofiler.http.dto.send.JavaDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.JavaVirtualMachineDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
-import io.github.sekelenao.skprofiler.util.Durations;
+import io.github.sekelenao.skprofiler.util.Units;
 
 public final class StatusEndpoint implements Endpoint {
 
@@ -29,7 +29,7 @@ public final class StatusEndpoint implements Endpoint {
                                 EnvironmentProperties.vmName().orElse(MISSING_INFORMATION),
                                 EnvironmentProperties.vmVersion().orElse(MISSING_INFORMATION),
                                 EnvironmentProperties.vmVendor().orElse(MISSING_INFORMATION),
-                                Durations.asHumanReadable(EnvironmentProperties.vmUptime())
+                                Units.durationAsHumanReadable(EnvironmentProperties.vmUptime())
                         )
                 )
         );
