@@ -1,8 +1,11 @@
 package io.github.sekelenao.skprofiler.system;
 
+import io.github.sekelenao.skprofiler.util.Optionals;
+
 import java.lang.management.ManagementFactory;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 public final class EnvironmentProperties {
 
@@ -36,6 +39,38 @@ public final class EnvironmentProperties {
 
     public static Duration vmUptime(){
         return Duration.ofMillis(ManagementFactory.getRuntimeMXBean().getUptime());
+    }
+
+    public static OptionalLong heapMemoryInitialSize(){
+        return Optionals.emptyIfNegative(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getInit());
+    }
+
+    public static long heapMemoryUsedSize(){
+        return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed();
+    }
+
+    public static long heapMemoryCommittedSize(){
+        return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getCommitted();
+    }
+
+    public static OptionalLong heapMemoryMaxSize(){
+        return Optionals.emptyIfNegative(ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getMax());
+    }
+
+    public static OptionalLong nonHeapMemoryInitialSize(){
+        return Optionals.emptyIfNegative(ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getInit());
+    }
+
+    public static long nonHeapMemoryUsedSize(){
+        return ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getUsed();
+    }
+
+    public static long nonHeapMemoryCommittedSize(){
+        return ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getCommitted();
+    }
+
+    public static OptionalLong nonHeapMemoryMaxSize(){
+        return Optionals.emptyIfNegative(ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getMax());
     }
 
 }

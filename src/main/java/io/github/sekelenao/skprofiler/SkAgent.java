@@ -2,6 +2,7 @@ package io.github.sekelenao.skprofiler;
 
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.http.endpoint.HomeEndpoint;
+import io.github.sekelenao.skprofiler.http.endpoint.MemoryEndpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.SelfDestructEndpoint;
 import io.github.sekelenao.skprofiler.log.CustomLogger;
@@ -23,9 +24,10 @@ public final class SkAgent {
             var port = CustomHttpServer.parsePort(arguments);
             var server = CustomHttpServer.bind(port);
             server.with(new HomeEndpoint())
-                    .with(new StatusEndpoint())
-                    .with(new SelfDestructEndpoint(server::stop))
-                    .start();
+                .with(new StatusEndpoint())
+                .with(new SelfDestructEndpoint(server::stop))
+                .with(new MemoryEndpoint())
+                .start();
         } catch (IOException exception) {
             LOGGER.severe("Encountered IOException during starting process: " + exception);
             throw new AssertionError(exception);
