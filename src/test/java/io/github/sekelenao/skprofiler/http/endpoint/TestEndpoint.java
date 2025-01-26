@@ -151,4 +151,10 @@ final class TestEndpoint {
         testDefaultBehaviorForRequestMethod("POST");
     }
 
+    @Test
+    @DisplayName("Default behavior for DELETE request method is 405")
+    void wrongMethodDelete() throws Exception {
+        testDefaultBehaviorForRequestMethod("DELETE");
+    }
+
 }

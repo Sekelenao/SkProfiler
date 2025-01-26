@@ -12,7 +12,7 @@ public enum HttpStatus {
 
     HttpStatus(int code) {
         if(code < 100 || code > 599){
-            throw new IllegalArgumentException("Invalid http code");
+            throw new IllegalArgumentException("Invalid HTTP code");
         }
         this.code = code;
     }
