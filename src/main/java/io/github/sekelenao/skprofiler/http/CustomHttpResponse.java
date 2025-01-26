@@ -21,7 +21,7 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
     public static void modifyHeaders(Headers headers){
         Objects.requireNonNull(headers);
         headers.set("Content-Type", "application/json");
-        headers.set("Access-Control-Allow-Methods", "GET, PUT");
+        headers.set("Access-Control-Allow-Methods", "GET, PUT, DELETE");
     }
 
     public static CustomHttpResponse success(Record body){
