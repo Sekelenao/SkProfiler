@@ -3,6 +3,7 @@ package io.github.sekelenao.skprofiler.util;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalLong;
+import java.util.function.LongFunction;
 
 public final class Optionals {
 
@@ -27,19 +28,22 @@ public final class Optionals {
     }
 
     /**
-     * Converts the value contained in the provided {@code OptionalLong} to its string representation,
-     * or returns a predefined missing descriptor string if the {@code OptionalLong} is empty.
+     * Converts an {@code OptionalLong} to its string representation or a missing descriptor
+     * when the {@code OptionalLong} is empty.
      *
-     * @param optional the {@code OptionalLong} containing a value or empty if no value is present
-     * @return the string representation of the value if present, or a missing descriptor string if empty
+     * @param optional an {@code OptionalLong} possibly containing a long value or empty if no value is present
+     * @param toString a {@code LongFunction} that defines how the long value should be converted to a string
+     * @return the string representation of the contained value using the provided {@code LongFunction}, or
+     *         a default missing descriptor string if the {@code OptionalLong} is empty
      */
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static String asStringOrMissingDescriptor(OptionalLong optional) {
+    public static String asStringOrMissingDescriptor(OptionalLong optional, LongFunction<String> toString) {
         Objects.requireNonNull(optional);
+        Objects.requireNonNull(toString);
         if(optional.isEmpty()) {
             return MISSING_INFORMATION;
         }
-        return Long.toString(optional.getAsLong());
+        return toString.apply(optional.getAsLong());
     }
 
     /**

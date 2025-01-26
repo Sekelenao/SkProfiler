@@ -20,15 +20,22 @@ final class TestOptionals {
         assertAll(
             () -> assertThrows(
                 NullPointerException.class,
-                () -> Optionals.asStringOrMissingDescriptor((Optional<?>) null)
+                () -> Optionals.asStringOrMissingDescriptor(null)
             ),
             () -> assertThrows(
                 NullPointerException.class,
-                () -> Optionals.asStringOrMissingDescriptor((OptionalLong) null)
+                () -> Optionals.asStringOrMissingDescriptor(null, Long::toString)
             ),
-            () -> assertEquals(MISSING_DESCRIPTOR, Optionals.asStringOrMissingDescriptor(emptyOptionalLong)),
+            () -> assertEquals(MISSING_DESCRIPTOR, Optionals.asStringOrMissingDescriptor(emptyOptionalLong, Long::toString)),
             () -> assertEquals(MISSING_DESCRIPTOR, Optionals.asStringOrMissingDescriptor(emptyOptional)),
-            () -> assertEquals("96", Optionals.asStringOrMissingDescriptor(OptionalLong.of(96L))),
+            () -> assertEquals(
+                "96",
+                Optionals.asStringOrMissingDescriptor(OptionalLong.of(96L), Long::toString)
+            ),
+            () -> assertEquals(
+                "96ok",
+                Optionals.asStringOrMissingDescriptor(OptionalLong.of(96L), l -> l + "ok")
+            ),
             () -> assertEquals("test", Optionals.asStringOrMissingDescriptor(Optional.of("test")))
         );
     }
