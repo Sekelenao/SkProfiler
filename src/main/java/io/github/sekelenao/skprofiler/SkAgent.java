@@ -3,8 +3,8 @@ package io.github.sekelenao.skprofiler;
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.http.endpoint.HomeEndpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.MemoryEndpoint;
-import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.SelfDestructEndpoint;
+import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
 import io.github.sekelenao.skprofiler.log.CustomLogger;
 
 import java.io.IOException;
