@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public final class Units {
 
-    private static final String[] MEMORY_UNITS = {"B", "KiB", "MiB", "GiB"};
+    private static final String[] MEMORY_UNITS = {"KiB", "MiB", "GiB"};
 
     private Units() {
         throw new AssertionError("You cannot instantiate this class");
@@ -26,7 +26,10 @@ public final class Units {
         int unitIndex = (int) (Math.log(bytes) / Math.log(1024));
         unitIndex = Math.min(unitIndex, MEMORY_UNITS.length - 1);
         double readableValue = bytes / Math.pow(1024, unitIndex);
-        return String.format(Locale.ROOT, "%.2f %s", readableValue, MEMORY_UNITS[unitIndex]);
+        if(unitIndex == 0){
+            return String.format(Locale.ROOT, "%.2f B", readableValue);
+        }
+        return String.format(Locale.ROOT, "%d (~%.2f %s)", bytes, readableValue, MEMORY_UNITS[--unitIndex]);
     }
 
 }
