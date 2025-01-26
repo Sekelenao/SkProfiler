@@ -23,13 +23,13 @@ public final class Units {
 
     public static String bytesAsHumanReadable(long bytes) {
         Assertions.isPositive(bytes);
+        if(bytes < 1024){
+            return bytes + (bytes <= 1 ? " byte" : " bytes");
+        }
         int unitIndex = (int) (Math.log(bytes) / Math.log(1024));
         unitIndex = Math.min(unitIndex, MEMORY_UNITS.length - 1);
-        if(unitIndex == 0){
-            return String.format(Locale.ROOT, "%d bytes", bytes);
-        }
         double readableValue = bytes / Math.pow(1024, unitIndex);
-        return String.format(Locale.ROOT, "%d bytes (~%.2f %s)", bytes, readableValue, MEMORY_UNITS[unitIndex]);
+        return String.format(Locale.ROOT, "~%.2f %s", readableValue, MEMORY_UNITS[unitIndex]);
     }
 
 }
