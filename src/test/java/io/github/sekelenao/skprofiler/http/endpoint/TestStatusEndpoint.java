@@ -39,41 +39,41 @@ final class TestStatusEndpoint {
             mockedStatic.when(EnvironmentProperties::vmVendor).thenReturn(Optional.of(vmVendor));
             mockedStatic.when(EnvironmentProperties::vmUptime).thenReturn(duration);
             assertAll(
-                    () -> assertEquals(
-                            CustomHttpResponse.success(
-                                    new StatusDTO(
-                                            command,
-                                            new JavaDTO(
-                                                    javaVersion, javaHome
-                                            ),
-                                            new JavaVirtualMachineDTO(
-                                                    vmName,
-                                                    vmVersion,
-                                                    vmVendor,
-                                                    Units.durationAsHumanReadable(duration)
-                                            )
-                                    )
+                () -> assertEquals(
+                    CustomHttpResponse.success(
+                        new StatusDTO(
+                            command,
+                            new JavaDTO(
+                                javaVersion, javaHome
                             ),
-                            statusEndpoint.processGetRequest()
+                            new JavaVirtualMachineDTO(
+                                vmName,
+                                vmVersion,
+                                vmVendor,
+                                Units.durationAsHumanReadable(duration)
+                            )
+                        )
                     ),
-                    () -> {
-                        mockedStatic.when(EnvironmentProperties::command).thenReturn(Optional.empty());
-                        assertEquals(
-                                CustomHttpResponse.success(
-                                        new StatusDTO(
-                                                "Unknown",
-                                                new JavaDTO(
-                                                    javaVersion, javaHome
-                                                ),
-                                                new JavaVirtualMachineDTO(
-                                                        vmName,
-                                                        vmVersion,
-                                                        vmVendor,
-                                                        Units.durationAsHumanReadable(duration)
-                                                )
-                                        )
-                                ), statusEndpoint.processGetRequest());
-                    }
+                    statusEndpoint.processGetRequest()
+                ),
+                () -> {
+                    mockedStatic.when(EnvironmentProperties::command).thenReturn(Optional.empty());
+                    assertEquals(
+                        CustomHttpResponse.success(
+                            new StatusDTO(
+                                "Unknown",
+                                new JavaDTO(
+                                    javaVersion, javaHome
+                                ),
+                                new JavaVirtualMachineDTO(
+                                    vmName,
+                                    vmVersion,
+                                    vmVendor,
+                                    Units.durationAsHumanReadable(duration)
+                                )
+                            )
+                        ), statusEndpoint.processGetRequest());
+                }
             );
         }
     }
