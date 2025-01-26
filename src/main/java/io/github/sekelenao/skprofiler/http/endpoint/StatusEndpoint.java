@@ -5,11 +5,10 @@ import io.github.sekelenao.skprofiler.http.dto.send.JavaDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.JavaVirtualMachineDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
+import io.github.sekelenao.skprofiler.util.Optionals;
 import io.github.sekelenao.skprofiler.util.Units;
 
 public final class StatusEndpoint implements Endpoint {
-
-    private static final String MISSING_INFORMATION = "Unknown";
 
     @Override
     public String route() {
@@ -19,19 +18,19 @@ public final class StatusEndpoint implements Endpoint {
     @Override
     public CustomHttpResponse processGetRequest() {
         return CustomHttpResponse.success(
-                new StatusDTO(
-                        EnvironmentProperties.command().orElse(MISSING_INFORMATION),
-                        new JavaDTO(
-                                EnvironmentProperties.javaVersion().orElse(MISSING_INFORMATION),
-                                EnvironmentProperties.javaHome().orElse(MISSING_INFORMATION)
-                        ),
-                        new JavaVirtualMachineDTO(
-                                EnvironmentProperties.vmName().orElse(MISSING_INFORMATION),
-                                EnvironmentProperties.vmVersion().orElse(MISSING_INFORMATION),
-                                EnvironmentProperties.vmVendor().orElse(MISSING_INFORMATION),
-                                Units.durationAsHumanReadable(EnvironmentProperties.vmUptime())
-                        )
+            new StatusDTO(
+                Optionals.asStringOrMissingDescriptor(EnvironmentProperties.command()),
+                new JavaDTO(
+                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.javaVersion()),
+                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.javaHome())
+                ),
+                new JavaVirtualMachineDTO(
+                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.vmName()),
+                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.vmVersion()),
+                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.vmVendor()),
+                    Units.durationAsHumanReadable(EnvironmentProperties.vmUptime())
                 )
+            )
         );
     }
 

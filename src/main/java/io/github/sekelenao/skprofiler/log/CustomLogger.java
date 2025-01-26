@@ -1,6 +1,7 @@
 package io.github.sekelenao.skprofiler.log;
 
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
+import io.github.sekelenao.skprofiler.util.Optionals;
 
 import java.util.Objects;
 import java.util.logging.ConsoleHandler;
@@ -30,7 +31,7 @@ public final class CustomLogger {
         this.logger = logger;
     }
 
-    public static CustomLogger on(Class<?> clazz){
+    public static CustomLogger on(Class<?> clazz) {
         Objects.requireNonNull(clazz);
         return LOGGER_CACHE.get(clazz);
     }
@@ -53,21 +54,22 @@ public final class CustomLogger {
         logger.log(Level.SEVERE, message, parameters);
     }
 
-    public static void displayBannerAndStartingLogs(CustomLogger logger){
+    public static void displayBannerAndStartingLogs(CustomLogger logger) {
         System.out.println("""
-           _____ __   ____             _____ __
-          / ___// /__/ __ \\_________  / __(_) /__  _____
-          \\__ \\/ //_/ /_/ / ___/ __ \\/ /_/ / / _ \\/ ___/
-         ___/ / ,< / ____/ /  / /_/ / __/ / /  __/ /
-        /____/_/|_/_/   /_/   \\____/_/ /_/_/\\___/_/
-        """);
+               _____ __   ____             _____ __
+              / ___// /__/ __ \\_________  / __(_) /__  _____
+              \\__ \\/ //_/ /_/ / ___/ __ \\/ /_/ / / _ \\/ ___/
+             ___/ / ,< / ____/ /  / /_/ / __/ / /  __/ /
+            /____/_/|_/_/   /_/   \\____/_/ /_/_/\\___/_/
+            """);
         logger.info(
-                "Agent is starting within the target application: {0}",
-                EnvironmentProperties.command().orElse("Unknown")
+            "Agent is starting within the target application: {0}",
+            Optionals.asStringOrMissingDescriptor(EnvironmentProperties.command())
         );
         logger.info(
-                "Actually running with the following Java version: {0}",
-                EnvironmentProperties.javaVersion().orElse("Unknown"));
+            "Actually running with the following Java version: {0}",
+            Optionals.asStringOrMissingDescriptor(EnvironmentProperties.javaVersion())
+        );
     }
 
 }
