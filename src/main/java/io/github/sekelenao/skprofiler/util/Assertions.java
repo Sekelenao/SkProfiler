@@ -69,4 +69,18 @@ public final class Assertions {
         }
     }
 
+    /**
+     * Ensures that the specified value is greater than the provided minimum value.
+     * Throws an {@code IllegalArgumentException} if the value is less than or equal to the minimum.
+     *
+     * @param value the numeric value to be validated
+     * @param min the minimum value that the provided value must exceed
+     * @throws IllegalArgumentException if the value is less than or equal to the minimum
+     */
+    public static void isGreaterThan(double value, double min){
+        if(value <= min) {
+            throw new IllegalArgumentException("Value should be greater than " + min + ": " + value);
+        }
+    }
+
 }
