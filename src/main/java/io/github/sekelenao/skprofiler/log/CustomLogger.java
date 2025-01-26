@@ -64,11 +64,11 @@ public final class CustomLogger {
             """);
         logger.info(
             "Agent is starting within the target application: {0}",
-            Optionals.asStringOrMissingDescriptor(EnvironmentProperties.command())
+            EnvironmentProperties.command().orElse(Optionals.missingValueDescriptor())
         );
         logger.info(
             "Actually running with the following Java version: {0}",
-            Optionals.asStringOrMissingDescriptor(EnvironmentProperties.javaVersion())
+            EnvironmentProperties.javaVersion().orElse(Optionals.missingValueDescriptor())
         );
     }
 

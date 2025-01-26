@@ -5,6 +5,7 @@ import io.github.sekelenao.skprofiler.http.dto.send.JavaDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.JavaVirtualMachineDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
+import io.github.sekelenao.skprofiler.util.Optionals;
 import io.github.sekelenao.skprofiler.util.Units;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ final class TestStatusEndpoint {
                     assertEquals(
                         CustomHttpResponse.success(
                             new StatusDTO(
-                                "Unknown",
+                                Optionals.missingValueDescriptor(),
                                 new JavaDTO(
                                     javaVersion, javaHome
                                 ),

@@ -19,15 +19,15 @@ public final class StatusEndpoint implements Endpoint {
     public CustomHttpResponse processGetRequest() {
         return CustomHttpResponse.success(
             new StatusDTO(
-                Optionals.asStringOrMissingDescriptor(EnvironmentProperties.command()),
+                EnvironmentProperties.command().orElse(Optionals.missingValueDescriptor()),
                 new JavaDTO(
-                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.javaVersion()),
-                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.javaHome())
+                    EnvironmentProperties.javaVersion().orElse(Optionals.missingValueDescriptor()),
+                    EnvironmentProperties.javaHome().orElse(Optionals.missingValueDescriptor())
                 ),
                 new JavaVirtualMachineDTO(
-                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.vmName()),
-                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.vmVersion()),
-                    Optionals.asStringOrMissingDescriptor(EnvironmentProperties.vmVendor()),
+                    EnvironmentProperties.vmName().orElse(Optionals.missingValueDescriptor()),
+                    EnvironmentProperties.vmVersion().orElse(Optionals.missingValueDescriptor()),
+                    EnvironmentProperties.vmVendor().orElse(Optionals.missingValueDescriptor()),
                     Units.durationAsHumanReadable(EnvironmentProperties.vmUptime())
                 )
             )
