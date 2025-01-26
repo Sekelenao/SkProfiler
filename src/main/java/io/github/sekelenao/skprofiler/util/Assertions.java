@@ -1,6 +1,5 @@
 package io.github.sekelenao.skprofiler.util;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -36,7 +35,10 @@ public final class Assertions {
      * @throws NullPointerException if the array itself or any of its elements is null
      */
     public static void requireNonNulls(Object... objects){
-        Arrays.stream(Objects.requireNonNull(objects)).forEach(Objects::requireNonNull);
+        Objects.requireNonNull(objects);
+        for(Object object : objects){
+            Objects.requireNonNull(object);
+        }
     }
 
     /**
@@ -50,6 +52,20 @@ public final class Assertions {
     public static void isPositive(double value){
         if(value < 0) {
             throw new IllegalArgumentException("Value should be positive: " + value);
+        }
+    }
+
+    /**
+     * Ensures all provided values are positive.
+     * Each value in the provided array is validated using the {@code isPositive} method.
+     * Throws an {@code IllegalArgumentException} if any value is less than zero.
+     *
+     * @param values the varargs array of numeric values to validate as positive
+     * @throws IllegalArgumentException if any of the values is less than zero
+     */
+    public static void arePositives(double... values){
+        for(double value : values){
+            isPositive(value);
         }
     }
 

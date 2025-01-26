@@ -38,4 +38,14 @@ final class TestAssertions {
         );
     }
 
+    @Test
+    void arePositivesAssertion() {
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.arePositives(-5.0, -1.0)),
+                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.arePositives(-0.1, 0.0)),
+                () -> assertDoesNotThrow(() -> Assertions.arePositives(0.0, 5.0)),
+                () -> assertDoesNotThrow(() -> Assertions.arePositives(5.0, 1.0))
+        );
+    }
+
 }
