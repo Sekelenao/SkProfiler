@@ -55,7 +55,7 @@ final class TestStatusEndpoint {
                             )
                         )
                     ),
-                    statusEndpoint.processGetRequest()
+                    statusEndpoint.processGetRequest("")
                 ),
                 () -> {
                     mockedStatic.when(EnvironmentProperties::command).thenReturn(Optional.empty());
@@ -73,7 +73,7 @@ final class TestStatusEndpoint {
                                     Units.durationAsHumanReadable(duration)
                                 )
                             )
-                        ), statusEndpoint.processGetRequest());
+                        ), statusEndpoint.processGetRequest(""));
                 }
             );
         }

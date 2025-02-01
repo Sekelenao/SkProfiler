@@ -16,7 +16,7 @@ public final class StatusEndpoint implements Endpoint {
     }
 
     @Override
-    public CustomHttpResponse processGetRequest() {
+    public CustomHttpResponse processGetRequest(String requestQuery) {
         return CustomHttpResponse.success(
             new StatusDTO(
                 EnvironmentProperties.command().orElse(Optionals.missingValueDescriptor()),
