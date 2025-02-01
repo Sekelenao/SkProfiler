@@ -101,6 +101,18 @@ public final class CustomJsonInterpreter {
         }
     }
 
+    private static String iterableAsJsonArray(Iterable<?> iterable){
+        var builder = new StringBuilder("[");
+        var iterator = iterable.iterator();
+        while(iterator.hasNext()){
+            builder.append(escape(iterator.next()));
+            if(iterator.hasNext()){
+                builder.append(", ");
+            }
+        }
+        return builder.append("]").toString();
+    }
+
     private static String escape(Object object) {
         return switch (object){
             case null -> "null";
@@ -113,6 +125,7 @@ public final class CustomJsonInterpreter {
             case Double d -> d.toString();
             case Character c -> "\"" + c + "\"";
             case String s -> "\"" + s + "\"";
+            case Iterable<?> it -> iterableAsJsonArray(it);
             case Record r -> serialize(r);
             default -> "\"" + object + "\"";
         };

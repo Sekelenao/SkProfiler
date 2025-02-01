@@ -82,7 +82,7 @@ final class TestCustomJsonInterpreter {
     void subObjectBehavior() {
         var subObject = new SubObject(List.of(1, 3, 5));
         assertEquals(
-                "{\"list\":\"" + subObject.list().toString() + "\"}",
+                "{\"list\":" + subObject.list().toString() + "}",
                 CustomJsonInterpreter.serialize(subObject)
         );
     }
