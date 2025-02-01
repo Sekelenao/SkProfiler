@@ -8,9 +8,7 @@ public record ResultsPage(int pageNumber, int totalPages, int pageSize, int tota
 
     public ResultsPage {
         Assertions.arePositives(pageNumber, totalPages, pageSize, totalResults, fromIndex, toIndex);
-        if(fromIndex > toIndex) {
-            throw new IllegalArgumentException("fromIndex > toIndex");
-        }
+        Assertions.isLowerOrEqualThan(fromIndex, toIndex);
     }
 
     public static ResultsPage create(int pageNumber, int totalResults) throws PaginationException {

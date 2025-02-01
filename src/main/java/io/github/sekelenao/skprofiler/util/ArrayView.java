@@ -16,6 +16,7 @@ public class ArrayView<T> extends AbstractList<T> implements Iterable<T>, Random
     public ArrayView(T[] array, int from, int to) {
         Assertions.checkPosition(from, array.length);
         Assertions.checkPosition(to, array.length);
+        Assertions.isLowerOrEqualThan(from, to);
         this.array = Objects.requireNonNull(array);
         this.from = from;
         this.to = to;
