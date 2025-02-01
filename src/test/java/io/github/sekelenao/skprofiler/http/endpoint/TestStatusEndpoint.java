@@ -1,9 +1,9 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
 import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
-import io.github.sekelenao.skprofiler.http.dto.send.JavaDTO;
-import io.github.sekelenao.skprofiler.http.dto.send.JavaVirtualMachineDTO;
-import io.github.sekelenao.skprofiler.http.dto.send.StatusDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.status.JavaDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.status.JavaVirtualMachineDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.status.StatusDTO;
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
 import io.github.sekelenao.skprofiler.util.Optionals;
 import io.github.sekelenao.skprofiler.util.Units;

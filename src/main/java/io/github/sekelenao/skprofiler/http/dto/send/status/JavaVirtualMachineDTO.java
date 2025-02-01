@@ -1,4 +1,4 @@
-package io.github.sekelenao.skprofiler.http.dto.send;
+package io.github.sekelenao.skprofiler.http.dto.send.status;
 
 import io.github.sekelenao.skprofiler.util.Assertions;
 
