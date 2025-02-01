@@ -37,6 +37,15 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
         );
     }
 
+    public static CustomHttpResponse badRequest(String message){
+        Objects.requireNonNull(message);
+        return new CustomHttpResponse(HttpStatus.BAD_REQUEST,
+            Optional.of(
+                new MessageDTO(message)
+            )
+        );
+    }
+
     public static CustomHttpResponse notFound(){
         return new CustomHttpResponse(HttpStatus.NOT_FOUND,
                 Optional.of(
