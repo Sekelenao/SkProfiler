@@ -35,7 +35,7 @@ public class ArrayView<T> extends AbstractList<T> implements Iterable<T>, Random
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof ArrayView<?> otherView && Arrays.equals(otherView.array, array)
+        return other instanceof ArrayView<?> otherView && otherView.array == array
             && otherView.from == from && otherView.to == to;
     }
 
