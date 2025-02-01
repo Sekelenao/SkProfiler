@@ -83,4 +83,19 @@ public final class Assertions {
         }
     }
 
+    /**
+     * Validates that the specified position is within the valid range
+     * of 0 (inclusive) to the given size (inclusive).
+     * Throws an {@code IllegalArgumentException} if the position is outside this range.
+     *
+     * @param position the position to validate
+     * @param size the size defining the upper bound of the valid range
+     * @throws IllegalArgumentException if the position is less than 0 or greater than the size
+     */
+    public static void checkPosition(int position, int size){
+        if(position < 0 || position > size) {
+            throw new IllegalArgumentException("Wrong position was provided: " + position);
+        }
+    }
+
 }
