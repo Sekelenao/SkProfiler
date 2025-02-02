@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.OptionalInt;
 
-public final class RequestQueryAsDynamicTypedMap {
+public final class QueryParamsAsDynamicTypedMap {
 
     private final Map<String, String> params;
 
-    private RequestQueryAsDynamicTypedMap(Map<String, String> params) {
+    private QueryParamsAsDynamicTypedMap(Map<String, String> params) {
         this.params = Objects.requireNonNull(params);
     }
 
@@ -27,9 +27,9 @@ public final class RequestQueryAsDynamicTypedMap {
         return map;
     }
 
-    public static RequestQueryAsDynamicTypedMap of(String query) {
+    public static QueryParamsAsDynamicTypedMap of(String query) {
         Objects.requireNonNull(query);
-        return new RequestQueryAsDynamicTypedMap(parseQuery(query));
+        return new QueryParamsAsDynamicTypedMap(parseQuery(query));
     }
 
     public OptionalInt getAsInt(String key) throws DynamicTypingException {

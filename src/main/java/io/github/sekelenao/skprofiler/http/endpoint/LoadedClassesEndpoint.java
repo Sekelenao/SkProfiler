@@ -3,7 +3,7 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
 import io.github.sekelenao.skprofiler.exception.PaginationException;
 import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
-import io.github.sekelenao.skprofiler.http.RequestQueryAsDynamicTypedMap;
+import io.github.sekelenao.skprofiler.http.QueryParamsAsDynamicTypedMap;
 import io.github.sekelenao.skprofiler.http.ResultsPage;
 import io.github.sekelenao.skprofiler.http.dto.send.PaginationDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.loadedclasses.LoadedClassesPageDTO;
@@ -27,7 +27,7 @@ public final class LoadedClassesEndpoint implements Endpoint {
     @Override
     public CustomHttpResponse processGetRequest(String requestQuery) {
         var loadedClasses = instrumentation.getAllLoadedClasses();
-        var params = RequestQueryAsDynamicTypedMap.of(requestQuery);
+        var params = QueryParamsAsDynamicTypedMap.of(requestQuery);
         try {
             var resultsPage = ResultsPage.create(params.getAsInt("page").orElse(1), loadedClasses.length);
             return CustomHttpResponse.success(
