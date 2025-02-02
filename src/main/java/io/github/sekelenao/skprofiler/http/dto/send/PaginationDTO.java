@@ -8,7 +8,7 @@ import java.util.Objects;
 public record PaginationDTO(int currentPage, int totalPages, int pageSize, int totalResults, String previousPage, String nextPage) {
 
     public PaginationDTO {
-        Assertions.arePositives(currentPage, totalPages, pageSize, totalResults);
+        Assertions.arePositivesOrZero(currentPage, totalPages, pageSize, totalResults);
     }
 
     private static String previousPage(String route, int page) {

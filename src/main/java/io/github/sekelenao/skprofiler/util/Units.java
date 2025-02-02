@@ -22,7 +22,7 @@ public final class Units {
     }
 
     public static String bytesAsHumanReadable(long bytes) {
-        Assertions.isPositive(bytes);
+        Assertions.isPositiveOrZero(bytes);
         if(bytes < 1024){
             return bytes + (bytes <= 1 ? " byte" : " bytes");
         }

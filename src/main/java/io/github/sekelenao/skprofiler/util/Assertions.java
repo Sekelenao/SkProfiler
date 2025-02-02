@@ -49,7 +49,7 @@ public final class Assertions {
      * @param value the numeric value to validate as positive
      * @throws IllegalArgumentException if the value is less than zero
      */
-    public static void isPositive(double value){
+    public static void isPositiveOrZero(double value){
         if(value < 0) {
             throw new IllegalArgumentException("Value should be positive: " + value);
         }
@@ -63,9 +63,9 @@ public final class Assertions {
      * @param values the varargs array of numeric values to validate as positive
      * @throws IllegalArgumentException if any of the values is less than zero
      */
-    public static void arePositives(double... values){
+    public static void arePositivesOrZero(double... values){
         for(double value : values){
-            isPositive(value);
+            isPositiveOrZero(value);
         }
     }
 

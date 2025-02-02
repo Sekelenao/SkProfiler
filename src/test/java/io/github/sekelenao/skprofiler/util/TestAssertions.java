@@ -33,23 +33,23 @@ final class TestAssertions {
 
     @Test
     @DisplayName("Is positive assertion is working")
-    void isPositiveAssertion() {
+    void isPositiveOrZeroAssertion() {
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.isPositive(-5.0)),
-                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.isPositive(-0.1)),
-                () -> assertDoesNotThrow(() -> Assertions.isPositive(0.0)),
-                () -> assertDoesNotThrow(() -> Assertions.isPositive(5.0))
+                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.isPositiveOrZero(-5.0)),
+                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.isPositiveOrZero(-0.1)),
+                () -> assertDoesNotThrow(() -> Assertions.isPositiveOrZero(0.0)),
+                () -> assertDoesNotThrow(() -> Assertions.isPositiveOrZero(5.0))
         );
     }
 
     @Test
     @DisplayName("Are positives assertion is working")
-    void arePositivesAssertion() {
+    void arePositivesOrZeroAssertion() {
         assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.arePositives(-5.0, -1.0)),
-                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.arePositives(-0.1, 0.0)),
-                () -> assertDoesNotThrow(() -> Assertions.arePositives(0.0, 5.0)),
-                () -> assertDoesNotThrow(() -> Assertions.arePositives(5.0, 1.0))
+                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.arePositivesOrZero(-5.0, -1.0)),
+                () -> assertThrows(IllegalArgumentException.class, () -> Assertions.arePositivesOrZero(-0.1, 0.0)),
+                () -> assertDoesNotThrow(() -> Assertions.arePositivesOrZero(0.0, 5.0)),
+                () -> assertDoesNotThrow(() -> Assertions.arePositivesOrZero(5.0, 1.0))
         );
     }
 
