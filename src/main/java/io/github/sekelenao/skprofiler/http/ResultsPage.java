@@ -12,21 +12,17 @@ public record ResultsPage(int pageNumber, int totalPages, int pageSize, int tota
     }
 
     public static ResultsPage create(int pageNumber, int totalResults) throws PaginationException {
-        Assertions.arePositives(pageNumber, totalResults);
+        Assertions.isPositive(totalResults);
+        if(pageNumber < 1) {
+            throw new PaginationException();
+        }
         int from = (pageNumber - 1) * PaginatedResponse.PAGE_SIZE;
         int totalPages = (totalResults - 1) / PaginatedResponse.PAGE_SIZE + 1;
         if(from > totalResults - 1 && totalResults > 0) {
             throw new PaginationException();
         }
         var pageSize = Math.min(totalResults - from, PaginatedResponse.PAGE_SIZE);
-        return new ResultsPage(
-            pageNumber,
-            totalPages,
-            pageSize,
-            totalResults,
-            from,
-            from + pageSize
-        );
+        return new ResultsPage(pageNumber, totalPages, pageSize, totalResults, from, from + pageSize);
     }
 
 }

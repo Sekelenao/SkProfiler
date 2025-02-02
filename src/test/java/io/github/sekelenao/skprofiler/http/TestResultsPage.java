@@ -71,7 +71,7 @@ final class TestResultsPage {
     void shouldThrowPaginationExceptionForNegativeInputs() {
         int pageNumber = -1;
         int totalResults = 50;
-        assertThrows(IllegalArgumentException.class, () -> ResultsPage.create(pageNumber, totalResults));
+        assertThrows(PaginationException.class, () -> ResultsPage.create(pageNumber, totalResults));
     }
 
 }
