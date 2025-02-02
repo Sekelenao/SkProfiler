@@ -19,4 +19,14 @@ final class TestOptionals {
         );
     }
 
+    @Test
+    @DisplayName("Empty string if null is working")
+    void emptyStringIfNullIsWorking() {
+        var value = "Non-null value";
+        assertAll(
+            () -> assertEquals("", Optionals.emptyStringIfNull(null)),
+            () -> assertEquals(value, Optionals.emptyStringIfNull(value))
+        );
+    }
+
 }

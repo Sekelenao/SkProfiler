@@ -31,4 +31,14 @@ public final class Optionals {
         return value < 0 ? OptionalLong.empty() : OptionalLong.of(value);
     }
 
+    /**
+     * Returns an empty string if the provided value is {@code null}, otherwise returns the value itself.
+     *
+     * @param value the input string that may be {@code null}
+     * @return an empty string if {@code value} is {@code null}, or the original value otherwise
+     */
+    public static String emptyStringIfNull(String value){
+        return value == null ? "" : value;
+    }
+
 }
