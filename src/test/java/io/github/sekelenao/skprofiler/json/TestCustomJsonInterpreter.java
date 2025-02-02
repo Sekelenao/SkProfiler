@@ -30,9 +30,20 @@ final class TestCustomJsonInterpreter {
 
     }
 
-    record AllTypes(short a, int b, long c, float d, double e, byte f, boolean g, char h, String i) {}
+    private static class TestObject {
 
-    record SubObject(List<?> list) {}
+        @Override
+        public String toString() {
+            return "TestObject";
+        }
+
+    }
+
+    record AllTypes(short a, int b, long c, float d, double e, byte f, boolean g, char h, String i, String nul) {}
+
+    record SubObjectIterable(List<?> list) {}
+
+    record SubObject(TestObject testObject) {}
 
     record SubRecord(Person person) {}
 
@@ -52,18 +63,18 @@ final class TestCustomJsonInterpreter {
         var person = new Person("Me", 25.9);
 
         assertEquals(
-                JACKSON_MAPPER.writeValueAsString(person),
-                CustomJsonInterpreter.serialize(person)
+            JACKSON_MAPPER.writeValueAsString(person),
+            CustomJsonInterpreter.serialize(person)
         );
     }
 
     @Test
     @DisplayName("All primitive types are well serialized")
     void subObjectIsWellSerialized() throws JsonProcessingException {
-        AllTypes allTypes = new AllTypes((short) 1, 42, 123456789L, 3.14f, 2.71828, (byte) 8, true, 'A', "Hello");
+        AllTypes allTypes = new AllTypes((short) 1, 42, 123456789L, 3.14f, 2.71828, (byte) 8, true, 'A', "Hello", null);
         assertEquals(
-                JACKSON_MAPPER.writeValueAsString(allTypes),
-                CustomJsonInterpreter.serialize(allTypes)
+            JACKSON_MAPPER.writeValueAsString(allTypes),
+            CustomJsonInterpreter.serialize(allTypes)
         );
     }
 
@@ -78,12 +89,22 @@ final class TestCustomJsonInterpreter {
     }
 
     @Test
-    @DisplayName("Sub object (not a record) serialization behavior")
-    void subObjectBehavior() {
-        var subObject = new SubObject(List.of(1, 3, 5));
+    @DisplayName("Sub object iterable serialization behavior")
+    void subObjectIterableBehavior() {
+        var subObject = new SubObjectIterable(List.of(1, 3, 5));
         assertEquals(
                 "{\"list\":" + subObject.list().toString() + "}",
                 CustomJsonInterpreter.serialize(subObject)
+        );
+    }
+
+    @Test
+    @DisplayName("Sub object (not a record or an iterable) serialization behavior")
+    void subObjectBehavior() {
+        var testObject = new SubObject(new TestObject());
+        assertEquals(
+            "{\"testObject\":\"TestObject\"}",
+            CustomJsonInterpreter.serialize(testObject)
         );
     }
 
@@ -198,7 +219,7 @@ final class TestCustomJsonInterpreter {
     @Test
     @DisplayName("All types are working at deserialization")
     void allTypes() throws JsonProcessingException {
-        var allTypes = new AllTypes((short) 1, 42, 123456789L, 3.14f, 2.71828, (byte) 8, true, 'A', "Hello");
+        var allTypes = new AllTypes((short) 1, 42, 123456789L, 3.14f, 2.71828, (byte) 8, true, 'A', "Hello", "");
         assertEquals(
                 allTypes,
                 CustomJsonInterpreter.deserialize(JACKSON_MAPPER.writeValueAsString(allTypes), AllTypes.class)
