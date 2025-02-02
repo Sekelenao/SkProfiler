@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-final class ResultsPageTest {
+final class TestResultsPage {
 
     @Test
     @DisplayName("Should create a empty ResultsPage with valid inputs")
