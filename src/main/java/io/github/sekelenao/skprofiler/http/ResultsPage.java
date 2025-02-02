@@ -15,7 +15,7 @@ public record ResultsPage(int pageNumber, int totalPages, int pageSize, int tota
         Assertions.arePositives(pageNumber, totalResults);
         int from = (pageNumber - 1) * PaginatedResponse.PAGE_SIZE;
         int totalPages = (totalResults - 1) / PaginatedResponse.PAGE_SIZE + 1;
-        if(from > totalResults - 1) {
+        if(from > totalResults - 1 && totalResults > 0) {
             throw new PaginationException();
         }
         var pageSize = Math.min(totalResults - from, PaginatedResponse.PAGE_SIZE);
