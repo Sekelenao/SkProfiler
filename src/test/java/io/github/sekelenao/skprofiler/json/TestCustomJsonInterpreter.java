@@ -2,7 +2,7 @@ package io.github.sekelenao.skprofiler.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.sekelenao.skprofiler.exception.InvalidJsonFormatException;
+import io.github.sekelenao.skprofiler.exception.InvalidJsonException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -135,7 +135,7 @@ final class TestCustomJsonInterpreter {
 
     @Test
     @DisplayName("Json deserialization is working")
-    void deserializationIsWorking() {
+    void deserializationIsWorking() throws InvalidJsonException {
         var person = new Person("Me", 25.9);
         assertEquals(
                 person,
@@ -145,7 +145,7 @@ final class TestCustomJsonInterpreter {
 
     private static void checkJsonThrow(String json) {
         assertThrows(
-                InvalidJsonFormatException.class,
+                InvalidJsonException.class,
                 () -> CustomJsonInterpreter.deserialize(json, Person.class)
         );
     }
@@ -211,14 +211,14 @@ final class TestCustomJsonInterpreter {
     void invalidJsonFormat6() {
         var json = "{\"bool\":True}";
         assertThrows(
-                InvalidJsonFormatException.class,
+                InvalidJsonException.class,
                 () -> CustomJsonInterpreter.deserialize(json, BooleanRecord.class)
         );
     }
 
     @Test
     @DisplayName("All types are working at deserialization")
-    void allTypes() throws JsonProcessingException {
+    void allTypes() throws JsonProcessingException, InvalidJsonException {
         var allTypes = new AllTypes((short) 1, 42, 123456789L, 3.14f, 2.71828, (byte) 8, true, 'A', "Hello", "");
         assertEquals(
                 allTypes,

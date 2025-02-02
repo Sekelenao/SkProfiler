@@ -1,6 +1,6 @@
 package io.github.sekelenao.skprofiler.json;
 
-import io.github.sekelenao.skprofiler.exception.FormatException;
+import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,33 +46,33 @@ final class TestJsonAsDynamicTypedMap {
 
     static Stream<Arguments> provideClassAndCorrespondingExceptions() {
         return Stream.of(
-                Arguments.of(boolean.class, FormatException.class),
-                Arguments.of(Boolean.class, FormatException.class),
-                Arguments.of(byte.class, NumberFormatException.class),
-                Arguments.of(Byte.class, NumberFormatException.class),
-                Arguments.of(short.class, NumberFormatException.class),
-                Arguments.of(Short.class, NumberFormatException.class),
-                Arguments.of(int.class, NumberFormatException.class),
-                Arguments.of(Integer.class, NumberFormatException.class),
-                Arguments.of(long.class, NumberFormatException.class),
-                Arguments.of(Long.class, NumberFormatException.class),
-                Arguments.of(float.class, NumberFormatException.class),
-                Arguments.of(Float.class, NumberFormatException.class),
-                Arguments.of(double.class, NumberFormatException.class),
-                Arguments.of(Double.class, NumberFormatException.class),
-                Arguments.of(char.class, FormatException.class),
-                Arguments.of(Character.class, FormatException.class),
-                Arguments.of(ArrayList.class, IllegalArgumentException.class)
+                Arguments.of(boolean.class),
+                Arguments.of(Boolean.class),
+                Arguments.of(byte.class),
+                Arguments.of(Byte.class),
+                Arguments.of(short.class),
+                Arguments.of(Short.class),
+                Arguments.of(int.class),
+                Arguments.of(Integer.class),
+                Arguments.of(long.class),
+                Arguments.of(Long.class),
+                Arguments.of(float.class),
+                Arguments.of(Float.class),
+                Arguments.of(double.class),
+                Arguments.of(Double.class),
+                Arguments.of(char.class),
+                Arguments.of(Character.class),
+                Arguments.of(ArrayList.class)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideClassAndCorrespondingExceptions")
     @DisplayName("Get assertions")
-    void getAssertions(Class<?> type, Class<? extends Throwable> throwable) {
+    void getAssertions(Class<?> type) {
         var map = new JsonAsDynamicTypedMap();
         map.put("key", "INVALID VALUE");
-        assertThrows(throwable, () -> map.get("key", type));
+        assertThrows(DynamicTypingException.class, () -> map.get("key", type));
     }
 
     @Test
@@ -107,7 +107,7 @@ final class TestJsonAsDynamicTypedMap {
     @ParameterizedTest
     @MethodSource("provideClassAndCorrespondingValue")
     @DisplayName("Get is working for all types")
-    void getIsWorking(Class<?> type, String value, Object expected) {
+    void getIsWorking(Class<?> type, String value, Object expected) throws DynamicTypingException {
         var map = new JsonAsDynamicTypedMap();
         map.put("key", value);
         assertEquals(expected, map.get("key", type));

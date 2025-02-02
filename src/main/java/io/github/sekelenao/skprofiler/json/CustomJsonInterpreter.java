@@ -1,10 +1,12 @@
 package io.github.sekelenao.skprofiler.json;
 
-import io.github.sekelenao.skprofiler.exception.InvalidJsonFormatException;
+import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
+import io.github.sekelenao.skprofiler.exception.InvalidJsonException;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -142,10 +144,10 @@ public final class CustomJsonInterpreter {
                 .collect(Collectors.joining(",", "{", "}"));
     }
 
-    private static String removeJsonBraces(String json){
+    private static String removeJsonBraces(String json) throws InvalidJsonException {
         var trimmedJson = json.trim();
         if(!trimmedJson.startsWith("{") || !trimmedJson.endsWith("}")) {
-            throw new InvalidJsonFormatException("Not a Json format: " + json);
+            throw new InvalidJsonException("Not a Json format: " + json);
         }
         return trimmedJson.substring(1, trimmedJson.length() - 1).trim();
     }
@@ -161,24 +163,24 @@ public final class CustomJsonInterpreter {
         return value;
     }
 
-    private static void computeJsonEntryAsKeyValuePair(String entry, BiConsumer<String, String> consumer){
+    private static void computeJsonEntryAsKeyValuePair(String entry, BiConsumer<String, String> consumer) throws InvalidJsonException {
         var rawKeyValuePair = entry.split(":", 2);
         if(rawKeyValuePair.length != 2) {
-            throw new InvalidJsonFormatException("Not a Json entry: " + entry);
+            throw new InvalidJsonException("Not a Json entry: " + entry);
         }
         var key = rawKeyValuePair[0].trim();
         var value = rawKeyValuePair[1].trim();
         if(!KEY_PATTERN.matcher(key).matches() || !VALUE_PATTERN.matcher(value).matches()){
-            throw new InvalidJsonFormatException("Not a Json entry: " + entry);
+            throw new InvalidJsonException("Not a Json entry: " + entry);
         }
         consumer.accept(removeJsonKeyQuotes(key), removeJsonValueQuotes(value));
     }
 
-    private static JsonAsDynamicTypedMap jsonAsMap(String json){
+    private static JsonAsDynamicTypedMap jsonAsMap(String json) throws InvalidJsonException {
         var jsonWithoutBraces = removeJsonBraces(json);
         var jsonAsMap = new JsonAsDynamicTypedMap();
         if(jsonWithoutBraces.endsWith(",")) {
-            throw new InvalidJsonFormatException("Not a Json format: " + json);
+            throw new InvalidJsonException("Not a Json format: " + json);
         }
         var entriesArray = jsonWithoutBraces.split(",");
         for (var jsonEntry : entriesArray) {
@@ -187,7 +189,7 @@ public final class CustomJsonInterpreter {
         return jsonAsMap;
     }
 
-    public static <R extends Record> R deserialize(String json, Class<R> type) {
+    public static <R extends Record> R deserialize(String json, Class<R> type) throws InvalidJsonException {
         Objects.requireNonNull(json);
         Objects.requireNonNull(type);
         var jsonAsMap = jsonAsMap(json);
@@ -195,11 +197,17 @@ public final class CustomJsonInterpreter {
         var componentsTypes = Arrays.stream(components)
                 .map(ComponentDescriptor::type)
                 .toArray(Class<?>[]::new);
-        var values = Arrays.stream(components)
-                .map(descriptor -> jsonAsMap.get(descriptor.name(), descriptor.type()))
-                .toArray(Object[]::new);
+        var objects = new Object[components.length];
+        for (int i = 0; i < components.length; i++) {
+            var component = components[i];
+            try {
+                objects[i] = jsonAsMap.get(component.name(), component.type());
+            } catch (DynamicTypingException | NoSuchElementException exception) {
+                throw new InvalidJsonException(exception);
+            }
+        }
         var constructor = secureDeclaredConstructor(type, componentsTypes);
-        return secureInstantiate(constructor, values);
+        return secureInstantiate(constructor, objects);
     }
 
 }

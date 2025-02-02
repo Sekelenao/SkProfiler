@@ -1,6 +1,6 @@
 package io.github.sekelenao.skprofiler.json;
 
-import io.github.sekelenao.skprofiler.exception.FormatException;
+import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,37 +25,41 @@ final class JsonAsDynamicTypedMap {
         dynamicMap.put(key, value);
     }
 
-    private static boolean parseBoolean(String value){
+    private static boolean parseBoolean(String value) throws DynamicTypingException{
         return switch (value) {
             case "true" -> true;
             case "false" -> false;
-            default -> throw new FormatException("Value is not a boolean: " + value);
+            default -> throw new DynamicTypingException("Value is not a boolean: " + value);
         };
     }
 
-    private static char parseChar(String value){
+    private static char parseChar(String value) throws DynamicTypingException {
         if(value.length() != 1){
-            throw new FormatException("Value have wrong size: " + value);
+            throw new DynamicTypingException("String have wrong size for a char: " + value);
         }
         return value.charAt(0);
     }
 
-    private static Object transformValueIntoTargetType(String value, Class<?> type) {
-        return switch (type.getSimpleName()) {
-            case "Boolean", "boolean" -> parseBoolean(value);
-            case "byte", "Byte" -> Byte.parseByte(value);
-            case "Short", "short" -> Short.parseShort(value);
-            case "Integer", "int" -> Integer.parseInt(value);
-            case "Long", "long" -> Long.parseLong(value);
-            case "Float", "float" -> Float.parseFloat(value);
-            case "Double", "double" -> Double.parseDouble(value);
-            case "Character", "char" -> parseChar(value);
-            case "String" -> value;
-            default -> throw new IllegalArgumentException("Provided type is not supported: " + type.getName());
-        };
+    private static Object transformValueIntoTargetType(String value, Class<?> type) throws DynamicTypingException {
+        try {
+            return switch (type.getSimpleName()) {
+                case "Boolean", "boolean" -> parseBoolean(value);
+                case "byte", "Byte" -> Byte.parseByte(value);
+                case "Short", "short" -> Short.parseShort(value);
+                case "Integer", "int" -> Integer.parseInt(value);
+                case "Long", "long" -> Long.parseLong(value);
+                case "Float", "float" -> Float.parseFloat(value);
+                case "Double", "double" -> Double.parseDouble(value);
+                case "Character", "char" -> parseChar(value);
+                case "String" -> value;
+                default -> throw new IllegalArgumentException("Provided type is not supported: " + type.getName());
+            };
+        } catch (DynamicTypingException | IllegalArgumentException exception) {
+            throw new DynamicTypingException(exception);
+        }
     }
 
-    public Object get(String key, Class<?> targetType) {
+    public Object get(String key, Class<?> targetType) throws DynamicTypingException {
         Objects.requireNonNull(key);
         Objects.requireNonNull(targetType);
         var value = dynamicMap.get(key);
