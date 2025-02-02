@@ -17,11 +17,11 @@ public interface Endpoint extends HttpHandler {
         return CustomHttpResponse.methodNotAllowed();
     }
 
-    default CustomHttpResponse processPostRequest(String requestBody){
+    default CustomHttpResponse processPostRequest(String requestQuery, String requestBody) {
         return CustomHttpResponse.methodNotAllowed();
     }
 
-    default CustomHttpResponse processDeleteRequest(){
+    default CustomHttpResponse processDeleteRequest(String requestQuery) {
         return CustomHttpResponse.methodNotAllowed();
     }
 
@@ -29,13 +29,14 @@ public interface Endpoint extends HttpHandler {
     default void handle(HttpExchange exchange) throws IOException {
         var response = CustomHttpResponse.notFound();
         var uri = exchange.getRequestURI();
-        if(uri.getPath().equals(route())){
-            response = CustomHttpResponse.safeProcess(() -> switch (exchange.getRequestMethod()){
-                case "GET" -> processGetRequest(Optionals.emptyStringIfNull(uri.getQuery()));
+        if (uri.getPath().equals(route())) {
+            var query = Optionals.emptyStringIfNull(uri.getQuery());
+            response = CustomHttpResponse.safeProcess(() -> switch (exchange.getRequestMethod()) {
+                case "GET" -> processGetRequest(query);
                 case "POST" -> processPostRequest(
-                        ByteStreams.readFromInputStream(exchange::getRequestBody)
+                    query, ByteStreams.readFromInputStream(exchange::getRequestBody)
                 );
-                case "DELETE" -> processDeleteRequest();
+                case "DELETE" -> processDeleteRequest(query);
                 default -> CustomHttpResponse.methodNotAllowed();
             }, route());
         }

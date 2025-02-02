@@ -24,7 +24,7 @@ public final class SelfDestructEndpoint implements Endpoint {
     }
 
     @Override
-    public CustomHttpResponse processDeleteRequest() {
+    public CustomHttpResponse processDeleteRequest(String requestQuery) {
         LOGGER.info("Self-destruct route was called, stopping the agent in a few seconds");
         stopAction.run();
         return CustomHttpResponse.success(
