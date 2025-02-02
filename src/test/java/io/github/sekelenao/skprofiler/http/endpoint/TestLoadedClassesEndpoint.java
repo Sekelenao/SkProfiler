@@ -4,7 +4,7 @@ import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
 import io.github.sekelenao.skprofiler.http.ResultsPage;
 import io.github.sekelenao.skprofiler.http.dto.send.PaginationDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.loadedclasses.LoadedClassesPageDTO;
-import io.github.sekelenao.skprofiler.util.ArrayView;
+import io.github.sekelenao.skprofiler.util.ArrayViews;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ final class TestLoadedClassesEndpoint {
             () -> assertNotNull(response),
             () -> assertEquals(CustomHttpResponse.success(new LoadedClassesPageDTO(
                 PaginationDTO.from(ResultsPage.create(1, loadedClasses.length), endpoint.route()),
-                new ArrayView<>(loadedClasses, 0, 3)
+                ArrayViews.ranged(loadedClasses, 0, 3)
             )).status(), response.status())
         );
     }
@@ -78,7 +78,7 @@ final class TestLoadedClassesEndpoint {
             () -> assertNotNull(response),
             () -> assertEquals(CustomHttpResponse.success(new LoadedClassesPageDTO(
                 PaginationDTO.from(ResultsPage.create(1, 0), endpoint.route()),
-                new ArrayView<>(new Class<?>[]{}, 0, 0)
+                ArrayViews.ranged(new Class<?>[]{}, 0, 0)
             )).status(), response.status())
         );
     }

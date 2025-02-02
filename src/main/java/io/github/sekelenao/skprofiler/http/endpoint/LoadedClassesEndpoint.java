@@ -7,7 +7,7 @@ import io.github.sekelenao.skprofiler.http.QueryParamsAsDynamicTypedMap;
 import io.github.sekelenao.skprofiler.http.ResultsPage;
 import io.github.sekelenao.skprofiler.http.dto.send.PaginationDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.loadedclasses.LoadedClassesPageDTO;
-import io.github.sekelenao.skprofiler.util.ArrayView;
+import io.github.sekelenao.skprofiler.util.ArrayViews;
 
 import java.lang.instrument.Instrumentation;
 
@@ -33,7 +33,7 @@ public final class LoadedClassesEndpoint implements Endpoint {
             return CustomHttpResponse.success(
                 new LoadedClassesPageDTO(
                     PaginationDTO.from(resultsPage, route()),
-                    new ArrayView<Class<?>>(loadedClasses, resultsPage.fromIndex(), resultsPage.toIndex())
+                    ArrayViews.<Class<?>>ranged(loadedClasses, resultsPage.fromIndex(), resultsPage.toIndex())
                 )
             );
         } catch (DynamicTypingException _) {
