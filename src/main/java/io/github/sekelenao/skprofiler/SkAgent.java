@@ -1,10 +1,7 @@
 package io.github.sekelenao.skprofiler;
 
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
-import io.github.sekelenao.skprofiler.http.endpoint.HomeEndpoint;
-import io.github.sekelenao.skprofiler.http.endpoint.MemoryEndpoint;
-import io.github.sekelenao.skprofiler.http.endpoint.SelfDestructEndpoint;
-import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
+import io.github.sekelenao.skprofiler.http.endpoint.*;
 import io.github.sekelenao.skprofiler.log.CustomLogger;
 
 import java.io.IOException;
@@ -27,6 +24,7 @@ public final class SkAgent {
                 .with(new StatusEndpoint())
                 .with(new SelfDestructEndpoint(server::stop))
                 .with(new MemoryEndpoint())
+                .with(new LoadedClassesEndpoint(instrumentation))
                 .start();
         } catch (IOException exception) {
             LOGGER.severe("Encountered IOException during starting process: " + exception);

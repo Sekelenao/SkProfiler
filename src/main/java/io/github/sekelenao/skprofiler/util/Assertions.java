@@ -83,4 +83,35 @@ public final class Assertions {
         }
     }
 
+    /**
+     * Ensures that the specified value is less than the provided maximum value.
+     * Throws an {@code IllegalArgumentException} if the value is greater than or equal to the maximum.
+     *
+     * @param value the numeric value to be validated
+     * @param max the maximum value that the provided value must be less than
+     * @throws IllegalArgumentException if the value is greater than or equal to the maximum
+     */
+    public static void isLowerOrEqualThan(double value, double max){
+        if(value > max) {
+            throw new IllegalArgumentException("Value should be lower or equal than " + max + ": " + value);
+        }
+    }
+
+    /**
+     * Validates that the specified position is within the valid range
+     * of 0 (inclusive) to the given size (inclusive).
+     * Throws an {@code IllegalArgumentException} if the position is outside this range.
+     *
+     * @param position the position to validate
+     * @param size the size defining the upper bound of the valid range
+     * @throws IllegalArgumentException if the position is less than 0 or greater than the size
+     */
+    public static void checkPosition(int position, int size){
+        if(position < 0 || position > size) {
+            throw new IllegalArgumentException("Wrong position was provided: " + position);
+        }
+    }
+
+
+
 }

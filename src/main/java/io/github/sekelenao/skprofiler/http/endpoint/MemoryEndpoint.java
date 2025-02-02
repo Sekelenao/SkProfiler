@@ -14,7 +14,7 @@ public final class MemoryEndpoint implements Endpoint {
     }
 
     @Override
-    public CustomHttpResponse processGetRequest() {
+    public CustomHttpResponse processGetRequest(String requestQuery) {
         return CustomHttpResponse.success(
             new MemoryDTO(
                 new MemoryZoneDTO(

@@ -77,7 +77,7 @@ final class TestCustomHttpServer {
 
             @Override
             @SuppressWarnings("all")
-            public CustomHttpResponse processGetRequest() {
+            public CustomHttpResponse processGetRequest(String requestQuery) {
                 Integer.parseInt("impossible");
                 return CustomHttpResponse.success(new MessageDTO("Exception"));
             }

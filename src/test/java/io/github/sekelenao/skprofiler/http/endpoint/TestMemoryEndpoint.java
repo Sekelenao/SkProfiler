@@ -88,7 +88,7 @@ final class TestMemoryEndpoint {
                                 )
                             )
                         )
-                    ), memoryEndpoint.processGetRequest()
+                    ), memoryEndpoint.processGetRequest("")
                 )
             );
         }

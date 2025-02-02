@@ -67,4 +67,30 @@ final class TestAssertions {
         );
     }
 
+
+    @Test
+    @DisplayName("Check position assertion is working")
+    void checkPositionAssertion() {
+        assertAll(
+            () -> assertThrows(IllegalArgumentException.class, () -> Assertions.checkPosition(-1, 10)),
+            () -> assertThrows(IllegalArgumentException.class, () -> Assertions.checkPosition(11, 10)),
+            () -> assertDoesNotThrow(() -> Assertions.checkPosition(0, 10)),
+            () -> assertDoesNotThrow(() -> Assertions.checkPosition(10, 10))
+        );
+    }
+
+
+    @Test
+    @DisplayName("Is lower or equal than assertion is working")
+    void isLowerOrEqualThanAssertion() {
+        assertAll(
+            () -> assertThrows(IllegalArgumentException.class, () -> Assertions.isLowerOrEqualThan(10.1, 10.0)),
+            () -> assertThrows(IllegalArgumentException.class, () -> Assertions.isLowerOrEqualThan(-5.0, -5.1)),
+            () -> assertDoesNotThrow(() -> Assertions.isLowerOrEqualThan(5.0, 10.0)),
+            () -> assertDoesNotThrow(() -> Assertions.isLowerOrEqualThan(-5.0, 0.0)),
+            () -> assertDoesNotThrow(() -> Assertions.isLowerOrEqualThan(10.0, 10.0)),
+            () -> assertDoesNotThrow(() -> Assertions.isLowerOrEqualThan(0.0, 0.0))
+        );
+    }
+
 }

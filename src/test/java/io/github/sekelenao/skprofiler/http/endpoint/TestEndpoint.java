@@ -36,7 +36,7 @@ final class TestEndpoint {
         }
 
         @Override
-        public CustomHttpResponse processGetRequest() {
+        public CustomHttpResponse processGetRequest(String requestQuery) {
             return CustomHttpResponse.success(new MessageDTO("Hello world !"));
         }
 

@@ -12,7 +12,7 @@ public interface Endpoint extends HttpHandler {
 
     String route();
 
-    default CustomHttpResponse processGetRequest() {
+    default CustomHttpResponse processGetRequest(String requestQuery) {
         return CustomHttpResponse.methodNotAllowed();
     }
 
@@ -27,9 +27,11 @@ public interface Endpoint extends HttpHandler {
     @Override
     default void handle(HttpExchange exchange) throws IOException {
         var response = CustomHttpResponse.notFound();
-        if(exchange.getRequestURI().getPath().equals(route())){
+        var uri = exchange.getRequestURI();
+        var query = uri.getQuery();
+        if(uri.getPath().equals(route())){
             response = CustomHttpResponse.safeProcess(() -> switch (exchange.getRequestMethod()){
-                case "GET" -> processGetRequest();
+                case "GET" -> processGetRequest(query == null ? "" : query);
                 case "POST" -> processPostRequest(
                         ByteStreams.readFromInputStream(exchange::getRequestBody)
                 );
