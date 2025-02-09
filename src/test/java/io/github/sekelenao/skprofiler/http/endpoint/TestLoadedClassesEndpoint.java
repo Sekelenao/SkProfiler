@@ -1,10 +1,10 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
-import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
-import io.github.sekelenao.skprofiler.http.HttpStatus;
-import io.github.sekelenao.skprofiler.http.ResultsPage;
-import io.github.sekelenao.skprofiler.http.dto.send.PaginationDTO;
-import io.github.sekelenao.skprofiler.http.dto.send.loadedclasses.LoadedClassesPageDTO;
+import io.github.sekelenao.skprofiler.http.response.CustomHttpResponse;
+import io.github.sekelenao.skprofiler.http.response.HttpStatus;
+import io.github.sekelenao.skprofiler.http.response.Page;
+import io.github.sekelenao.skprofiler.http.dto.send.PageInfoDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.classes.LoadedClassesDTO;
 import io.github.sekelenao.skprofiler.util.ArrayViews;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +29,8 @@ final class TestLoadedClassesEndpoint {
 
         assertAll(
             () -> assertNotNull(response),
-            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesPageDTO(
-                PaginationDTO.from(ResultsPage.create(1, 3), endpoint.route()),
+            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesDTO(
+                PageInfoDTO.from(Page.create(1, 3), endpoint.route()),
                 ArrayViews.filtered(loadedClasses, clazz -> clazz.toString().matches("java\\.lang\\..*"))
             )).status(), response.status())
         );
@@ -114,8 +114,8 @@ final class TestLoadedClassesEndpoint {
 
         assertAll(
             () -> assertNotNull(response),
-            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesPageDTO(
-                PaginationDTO.from(ResultsPage.create(1, 0), endpoint.route()),
+            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesDTO(
+                PageInfoDTO.from(Page.create(1, 0), endpoint.route()),
                 ArrayViews.filtered(loadedClasses, clazz -> clazz.toString().matches("nonexistent\\.pattern\\..*"))
             )).status(), response.status())
         );
@@ -133,8 +133,8 @@ final class TestLoadedClassesEndpoint {
 
         assertAll(
             () -> assertNotNull(response),
-            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesPageDTO(
-                PaginationDTO.from(ResultsPage.create(1, loadedClasses.length), endpoint.route()),
+            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesDTO(
+                PageInfoDTO.from(Page.create(1, loadedClasses.length), endpoint.route()),
                 ArrayViews.ranged(loadedClasses, 0, 3)
             )).status(), response.status())
         );
@@ -181,8 +181,8 @@ final class TestLoadedClassesEndpoint {
 
         assertAll(
             () -> assertNotNull(response),
-            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesPageDTO(
-                PaginationDTO.from(ResultsPage.create(1, 0), endpoint.route()),
+            () -> assertEquals(CustomHttpResponse.success(new LoadedClassesDTO(
+                PageInfoDTO.from(Page.create(1, 0), endpoint.route()),
                 ArrayViews.ranged(new Class<?>[]{}, 0, 0)
             )).status(), response.status())
         );

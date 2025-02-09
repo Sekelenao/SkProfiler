@@ -1,6 +1,6 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
-import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
+import io.github.sekelenao.skprofiler.http.response.CustomHttpResponse;
 import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 import io.github.sekelenao.skprofiler.log.CustomLogger;

@@ -1,6 +1,6 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
-import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
+import io.github.sekelenao.skprofiler.http.response.CustomHttpResponse;
 import io.github.sekelenao.skprofiler.http.dto.send.status.JavaDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.status.JavaVirtualMachineDTO;
 import io.github.sekelenao.skprofiler.http.dto.send.status.StatusDTO;

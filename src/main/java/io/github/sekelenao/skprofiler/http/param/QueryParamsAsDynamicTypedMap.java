@@ -1,4 +1,4 @@
-package io.github.sekelenao.skprofiler.http;
+package io.github.sekelenao.skprofiler.http.param;
 
 import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
 
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.OptionalInt;
 
-public final class QueryParamsAsDynamicTypedMap {
+final class QueryParamsAsDynamicTypedMap {
 
     private final Map<String, String> params;
 
@@ -45,4 +45,8 @@ public final class QueryParamsAsDynamicTypedMap {
         }
     }
 
+    @Override
+    public String toString() {
+        return params.toString();
+    }
 }

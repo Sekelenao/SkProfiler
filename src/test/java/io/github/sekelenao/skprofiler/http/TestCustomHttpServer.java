@@ -3,6 +3,7 @@ package io.github.sekelenao.skprofiler.http;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 import io.github.sekelenao.skprofiler.http.endpoint.Endpoint;
 import io.github.sekelenao.skprofiler.http.endpoint.StatusEndpoint;
+import io.github.sekelenao.skprofiler.http.response.CustomHttpResponse;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

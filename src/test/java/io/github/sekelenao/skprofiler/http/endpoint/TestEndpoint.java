@@ -2,7 +2,7 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
+import io.github.sekelenao.skprofiler.http.response.CustomHttpResponse;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

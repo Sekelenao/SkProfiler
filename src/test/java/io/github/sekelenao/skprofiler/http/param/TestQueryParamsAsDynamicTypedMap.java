@@ -1,4 +1,4 @@
-package io.github.sekelenao.skprofiler.http;
+package io.github.sekelenao.skprofiler.http.param;
 
 import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
 import org.junit.jupiter.api.DisplayName;

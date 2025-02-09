@@ -1,6 +1,7 @@
-package io.github.sekelenao.skprofiler.http;
+package io.github.sekelenao.skprofiler.http.response;
 
 import com.sun.net.httpserver.Headers;
+import io.github.sekelenao.skprofiler.http.CustomHttpServer;
 import io.github.sekelenao.skprofiler.http.dto.send.MessageDTO;
 import io.github.sekelenao.skprofiler.log.CustomLogger;
 

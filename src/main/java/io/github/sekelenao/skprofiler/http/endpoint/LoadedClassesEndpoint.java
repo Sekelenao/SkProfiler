@@ -1,14 +1,14 @@
 package io.github.sekelenao.skprofiler.http.endpoint;
 
-import io.github.sekelenao.skprofiler.exception.DynamicTypingException;
 import io.github.sekelenao.skprofiler.exception.InvalidJsonException;
+import io.github.sekelenao.skprofiler.exception.InvalidQueryParamException;
 import io.github.sekelenao.skprofiler.exception.PaginationException;
-import io.github.sekelenao.skprofiler.http.CustomHttpResponse;
-import io.github.sekelenao.skprofiler.http.QueryParamsAsDynamicTypedMap;
-import io.github.sekelenao.skprofiler.http.ResultsPage;
 import io.github.sekelenao.skprofiler.http.dto.receive.PatternDTO;
-import io.github.sekelenao.skprofiler.http.dto.send.PaginationDTO;
-import io.github.sekelenao.skprofiler.http.dto.send.loadedclasses.LoadedClassesPageDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.PageInfoDTO;
+import io.github.sekelenao.skprofiler.http.dto.send.classes.LoadedClassesDTO;
+import io.github.sekelenao.skprofiler.http.param.QueryParamsReader;
+import io.github.sekelenao.skprofiler.http.response.CustomHttpResponse;
+import io.github.sekelenao.skprofiler.http.response.Page;
 import io.github.sekelenao.skprofiler.json.CustomJsonInterpreter;
 import io.github.sekelenao.skprofiler.util.ArrayViews;
 
@@ -32,16 +32,16 @@ public final class LoadedClassesEndpoint implements Endpoint {
     @Override
     public CustomHttpResponse processGetRequest(String requestQuery) {
         var loadedClasses = instrumentation.getAllLoadedClasses();
-        var params = QueryParamsAsDynamicTypedMap.of(requestQuery);
+        var paramsReader = new QueryParamsReader(requestQuery);
         try {
-            var resultsPage = ResultsPage.create(params.getAsInt("page").orElse(1), loadedClasses.length);
+            var resultsPage = Page.create(paramsReader.presentOrDefault("page", 1), loadedClasses.length);
             return CustomHttpResponse.success(
-                new LoadedClassesPageDTO(
-                    PaginationDTO.from(resultsPage, route()),
+                new LoadedClassesDTO(
+                    PageInfoDTO.from(resultsPage, route()),
                     ArrayViews.<Class<?>>ranged(loadedClasses, resultsPage.fromIndex(), resultsPage.toIndex())
                 )
             );
-        } catch (DynamicTypingException _) {
+        } catch (InvalidQueryParamException _) {
             return CustomHttpResponse.badRequest("Page parameter must be an integer");
         } catch (PaginationException _) {
             return CustomHttpResponse.badRequest("Requested page does not exist");
@@ -54,20 +54,19 @@ public final class LoadedClassesEndpoint implements Endpoint {
 
     @Override
     public CustomHttpResponse processPostRequest(String requestQuery, String requestBody) {
-        var params = QueryParamsAsDynamicTypedMap.of(requestQuery);
+        var paramsReader = new QueryParamsReader(requestQuery);
         try {
-            var pageNumber = params.getAsInt("page").orElse(1);
             var patternAsString = CustomJsonInterpreter.deserialize(requestBody, PatternDTO.class).pattern();
             var pattern = Pattern.compile(patternAsString);
             var view = ArrayViews.<Class<?>>filtered(instrumentation.getAllLoadedClasses(), filterByName(pattern));
-            var resultsPage = ResultsPage.create(pageNumber, view.size());
+            var resultsPage = Page.create(paramsReader.presentOrDefault("page", 1), view.size());
             return CustomHttpResponse.success(
-                new LoadedClassesPageDTO(
-                    PaginationDTO.from(resultsPage, route()),
+                new LoadedClassesDTO(
+                    PageInfoDTO.from(resultsPage, route()),
                     view.subList(resultsPage.fromIndex(), resultsPage.toIndex())
                 )
             );
-        } catch (DynamicTypingException _) {
+        } catch (InvalidQueryParamException _) {
             return CustomHttpResponse.badRequest("Page parameter must be an integer");
         } catch (InvalidJsonException _) {
             return CustomHttpResponse.badRequest();

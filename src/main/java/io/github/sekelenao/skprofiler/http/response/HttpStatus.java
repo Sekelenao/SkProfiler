@@ -1,4 +1,4 @@
-package io.github.sekelenao.skprofiler.http;
+package io.github.sekelenao.skprofiler.http.response;
 
 public enum HttpStatus {
 
