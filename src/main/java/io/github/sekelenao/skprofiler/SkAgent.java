@@ -25,6 +25,7 @@ public final class SkAgent {
                 .with(new SelfDestructEndpoint(server::stop))
                 .with(new MemoryEndpoint())
                 .with(new LoadedClassesEndpoint(instrumentation))
+                .with(new FileDescriptorsEndpoint())
                 .start();
         } catch (IOException exception) {
             LOGGER.severe("Encountered IOException during starting process: " + exception);

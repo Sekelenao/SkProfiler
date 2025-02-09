@@ -1,5 +1,6 @@
 package io.github.sekelenao.skprofiler.system;
 
+import com.sun.management.UnixOperatingSystemMXBean;
 import io.github.sekelenao.skprofiler.util.Optionals;
 
 import java.lang.management.ManagementFactory;
@@ -71,6 +72,20 @@ public final class EnvironmentProperties {
 
     public static OptionalLong nonHeapMemoryMaxSize(){
         return Optionals.emptyIfNegative(ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage().getMax());
+    }
+
+    public static OptionalLong openFileDescriptorCount(){
+        if(ManagementFactory.getOperatingSystemMXBean() instanceof UnixOperatingSystemMXBean unix){
+            return OptionalLong.of(unix.getOpenFileDescriptorCount());
+        }
+        return OptionalLong.empty();
+    }
+
+    public static OptionalLong maxFileDescriptorCount(){
+        if(ManagementFactory.getOperatingSystemMXBean() instanceof UnixOperatingSystemMXBean unix){
+            return OptionalLong.of(unix.getMaxFileDescriptorCount());
+        }
+        return OptionalLong.empty();
     }
 
 }
