@@ -22,7 +22,7 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
     public static void modifyHeaders(Headers headers) {
         Objects.requireNonNull(headers);
         headers.set("Content-Type", "application/json");
-        headers.set("Access-Control-Allow-Methods", "GET, PUT, DELETE");
+        headers.set("Access-Control-Allow-Methods", "GET, POST, DELETE");
     }
 
     public static CustomHttpResponse success(Record body) {
@@ -79,6 +79,7 @@ public record CustomHttpResponse(HttpStatus status, Optional<Record> body) {
 
     public static CustomHttpResponse safeProcess(RequestProcessor processor, String route) {
         Objects.requireNonNull(processor);
+        Objects.requireNonNull(route);
         try {
             return processor.response();
         } catch (Exception exception) {
