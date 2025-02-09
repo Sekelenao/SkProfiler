@@ -34,11 +34,11 @@ public final class LoadedClassesEndpoint implements Endpoint {
         var loadedClasses = instrumentation.getAllLoadedClasses();
         var paramsReader = new QueryParamsReader(requestQuery);
         try {
-            var resultsPage = Page.create(paramsReader.presentOrDefault("page", 1), loadedClasses.length);
+            var page = Page.create(paramsReader.presentOrDefault("page", 1), loadedClasses.length);
             return CustomHttpResponse.success(
                 new LoadedClassesDTO(
-                    PageInfoDTO.from(resultsPage, route()),
-                    ArrayViews.<Class<?>>ranged(loadedClasses, resultsPage.fromIndex(), resultsPage.toIndex())
+                    PageInfoDTO.from(page, route()),
+                    ArrayViews.<Class<?>>ranged(loadedClasses, page.fromIndex(), page.toIndex())
                 )
             );
         } catch (InvalidQueryParamException _) {
@@ -59,11 +59,11 @@ public final class LoadedClassesEndpoint implements Endpoint {
             var patternAsString = CustomJsonInterpreter.deserialize(requestBody, PatternDTO.class).pattern();
             var pattern = Pattern.compile(patternAsString);
             var view = ArrayViews.<Class<?>>filtered(instrumentation.getAllLoadedClasses(), filterByName(pattern));
-            var resultsPage = Page.create(paramsReader.presentOrDefault("page", 1), view.size());
+            var page = Page.create(paramsReader.presentOrDefault("page", 1), view.size());
             return CustomHttpResponse.success(
                 new LoadedClassesDTO(
-                    PageInfoDTO.from(resultsPage, route()),
-                    view.subList(resultsPage.fromIndex(), resultsPage.toIndex())
+                    PageInfoDTO.from(page, route()),
+                    view.subList(page.fromIndex(), page.toIndex())
                 )
             );
         } catch (InvalidQueryParamException _) {

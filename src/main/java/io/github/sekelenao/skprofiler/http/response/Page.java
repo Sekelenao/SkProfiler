@@ -15,17 +15,16 @@ public record Page(int pageNumber, int totalPages, int pageSize, int totalResult
         if (pageNumber < 1) {
             throw new PaginationException();
         }
-        int totalPages = (totalResults - 1) / PaginatedResponse.MAX_PAGE_SIZE + 1;
-        if(totalPages < pageNumber) {
-            throw new PaginationException();
-        }
-        if (totalResults == 0) {
+        if(totalResults == 0){
+            if(pageNumber > 1) throw new PaginationException();
             return new Page(pageNumber, 1, 0, 0, 0, 0);
         }
-        int from = (pageNumber - 1) * PaginatedResponse.MAX_PAGE_SIZE;
-        if (from >= totalResults) {
+        int trailingZeros = Integer.numberOfTrailingZeros(PaginatedResponse.MAX_PAGE_SIZE);
+        int totalPages = ((totalResults - 1) >> trailingZeros) + 1;
+        if (totalPages < pageNumber) {
             throw new PaginationException();
         }
+        int from = (pageNumber - 1) << trailingZeros;
         int pageSize = Math.min(totalResults - from, PaginatedResponse.MAX_PAGE_SIZE);
         return new Page(pageNumber, totalPages, pageSize, totalResults, from, from + pageSize);
     }
