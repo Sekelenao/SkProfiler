@@ -60,10 +60,10 @@ final class TestUnits {
                 () -> assertEquals("0 byte", Units.bytesAsHumanReadable(0)),
                 () -> assertEquals("1 byte", Units.bytesAsHumanReadable(1)),
                 () -> assertEquals("100 bytes", Units.bytesAsHumanReadable(100)),
-                () -> assertEquals("~1.00 KiB", Units.bytesAsHumanReadable(1024)),
-                () -> assertEquals("~1.00 MiB", Units.bytesAsHumanReadable(1024 * 1024)),
-                () -> assertEquals("~1.00 GiB", Units.bytesAsHumanReadable(1024L * 1024 * 1024)),
-                () -> assertEquals("~1024.00 GiB", Units.bytesAsHumanReadable(1024L * 1024 * 1024 * 1024))
+                () -> assertEquals("1.00 KiB", Units.bytesAsHumanReadable(1024)),
+                () -> assertEquals("1.00 MiB", Units.bytesAsHumanReadable(1024 * 1024)),
+                () -> assertEquals("1.00 GiB", Units.bytesAsHumanReadable(1024L * 1024 * 1024)),
+                () -> assertEquals("1024.00 GiB", Units.bytesAsHumanReadable(1024L * 1024 * 1024 * 1024))
         );
     }
 
@@ -71,14 +71,14 @@ final class TestUnits {
     @DisplayName("FormatBytes handles non-round values up to GiB")
     void bytesAsHumanReadableWorksWithNonRoundValuesUpToGiB() {
         assertAll(
-                () -> assertEquals("~1.23 KiB", Units.bytesAsHumanReadable(1260)),
-                () -> assertEquals("~12.34 KiB", Units.bytesAsHumanReadable(12634)),
-                () -> assertEquals("~3.45 MiB", Units.bytesAsHumanReadable(3612672)),
-                () -> assertEquals("~7.89 GiB", Units.bytesAsHumanReadable(8472498176L)),
-                () -> assertEquals("~122.88 GiB", Units.bytesAsHumanReadable(131941395333L)),
-                () -> assertEquals("~5918747.61 GiB", Units.bytesAsHumanReadable(6355206855698432L)),
-                () -> assertEquals("~1288490188.80 GiB", Units.bytesAsHumanReadable(1383505805528216371L)),
-                () -> assertEquals("~8589934592.00 GiB", Units.bytesAsHumanReadable(Long.MAX_VALUE))
+                () -> assertEquals("1.23 KiB", Units.bytesAsHumanReadable(1260)),
+                () -> assertEquals("12.34 KiB", Units.bytesAsHumanReadable(12634)),
+                () -> assertEquals("3.45 MiB", Units.bytesAsHumanReadable(3612672)),
+                () -> assertEquals("7.89 GiB", Units.bytesAsHumanReadable(8472498176L)),
+                () -> assertEquals("122.88 GiB", Units.bytesAsHumanReadable(131941395333L)),
+                () -> assertEquals("5918747.61 GiB", Units.bytesAsHumanReadable(6355206855698432L)),
+                () -> assertEquals("1288490188.80 GiB", Units.bytesAsHumanReadable(1383505805528216371L)),
+                () -> assertEquals("8589934592.00 GiB", Units.bytesAsHumanReadable(Long.MAX_VALUE))
         );
     }
 

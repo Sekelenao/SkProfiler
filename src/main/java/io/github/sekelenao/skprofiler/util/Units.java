@@ -29,7 +29,7 @@ public final class Units {
         int unitIndex = (int) (Math.log(bytes) / Math.log(1024));
         unitIndex = Math.min(unitIndex, MEMORY_UNITS.length - 1);
         double readableValue = bytes / Math.pow(1024, unitIndex);
-        return String.format(Locale.ROOT, "~%.2f %s", readableValue, MEMORY_UNITS[unitIndex]);
+        return String.format(Locale.ROOT, "%.2f %s", readableValue, MEMORY_UNITS[unitIndex]);
     }
 
 }
