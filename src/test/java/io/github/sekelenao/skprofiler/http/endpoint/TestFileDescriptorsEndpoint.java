@@ -2,7 +2,6 @@ package io.github.sekelenao.skprofiler.http.endpoint;
 
 import io.github.sekelenao.skprofiler.http.dto.send.file.FileDescriptorsDTO;
 import io.github.sekelenao.skprofiler.system.EnvironmentProperties;
-import io.github.sekelenao.skprofiler.util.Optionals;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -28,9 +27,9 @@ final class TestFileDescriptorsEndpoint {
                 () -> assertNotNull(response.body()),
                 () -> assertTrue(response.body().isPresent()),
                 () -> assertTrue(
-                    response.body().orElseThrow() instanceof FileDescriptorsDTO(String opened, String max)
-                        && opened.equals("100")
-                        && max.equals("200")
+                    response.body().orElseThrow() instanceof FileDescriptorsDTO(long opened, long max)
+                        && opened == 100
+                        && max == 200
                 )
             );
         }
@@ -50,9 +49,9 @@ final class TestFileDescriptorsEndpoint {
                 () -> assertNotNull(response.body()),
                 () -> assertTrue(response.body().isPresent()),
                 () -> assertTrue(
-                    response.body().orElseThrow() instanceof FileDescriptorsDTO(String opened, String max)
-                        && opened.equals(Optionals.missingValueDescriptor())
-                        && max.equals(Optionals.missingValueDescriptor())
+                    response.body().orElseThrow() instanceof FileDescriptorsDTO(long opened, long max)
+                        && opened == -1
+                        && max == -1
                 )
             );
         }

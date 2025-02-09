@@ -22,6 +22,10 @@ public final class EnvironmentProperties {
         return Optional.ofNullable(System.getProperty("java.version"));
     }
 
+    public static Optional<String> javaHome(){
+        return Optional.ofNullable(System.getProperty("java.home"));
+    }
+
     public static Optional<String> vmName(){
         return Optional.ofNullable(System.getProperty("java.vm.name"));
     }
@@ -34,8 +38,12 @@ public final class EnvironmentProperties {
         return Optional.ofNullable(System.getProperty("java.vm.vendor"));
     }
 
-    public static Optional<String> javaHome(){
-        return Optional.ofNullable(System.getProperty("java.home"));
+    public static OptionalLong vmPID(){
+        try {
+            return OptionalLong.of(ProcessHandle.current().pid());
+        } catch (UnsupportedOperationException exception) {
+            return OptionalLong.empty();
+        }
     }
 
     public static Duration vmUptime(){

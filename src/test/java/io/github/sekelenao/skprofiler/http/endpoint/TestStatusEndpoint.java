@@ -13,6 +13,7 @@ import org.mockito.MockedStatic;
 
 import java.time.Duration;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,7 @@ final class TestStatusEndpoint {
         var vmName = "Java HotSpot(TM) 64-Bit Server VM";
         var vmVersion = "25.255-b02";
         var vmVendor = "Oracle Corporation";
+        var pid = 123456789L;
         var duration = Duration.ofMillis(15588854684464L);
         var statusEndpoint = new StatusEndpoint();
         try (MockedStatic<EnvironmentProperties> mockedStatic = mockStatic(EnvironmentProperties.class)) {
@@ -39,6 +41,7 @@ final class TestStatusEndpoint {
             mockedStatic.when(EnvironmentProperties::vmVersion).thenReturn(Optional.of(vmVersion));
             mockedStatic.when(EnvironmentProperties::vmVendor).thenReturn(Optional.of(vmVendor));
             mockedStatic.when(EnvironmentProperties::vmUptime).thenReturn(duration);
+            mockedStatic.when(EnvironmentProperties::vmPID).thenReturn(OptionalLong.of(pid));
             assertAll(
                 () -> assertEquals(
                     CustomHttpResponse.success(
@@ -51,7 +54,8 @@ final class TestStatusEndpoint {
                                 vmName,
                                 vmVersion,
                                 vmVendor,
-                                Units.durationAsHumanReadable(duration)
+                                Units.durationAsHumanReadable(duration),
+                                pid
                             )
                         )
                     ),
@@ -70,7 +74,8 @@ final class TestStatusEndpoint {
                                     vmName,
                                     vmVersion,
                                     vmVendor,
-                                    Units.durationAsHumanReadable(duration)
+                                    Units.durationAsHumanReadable(duration),
+                                    pid
                                 )
                             )
                         ), statusEndpoint.processGetRequest(""));

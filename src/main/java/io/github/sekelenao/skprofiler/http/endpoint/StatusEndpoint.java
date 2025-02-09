@@ -28,7 +28,8 @@ public final class StatusEndpoint implements Endpoint {
                     EnvironmentProperties.vmName().orElse(Optionals.missingValueDescriptor()),
                     EnvironmentProperties.vmVersion().orElse(Optionals.missingValueDescriptor()),
                     EnvironmentProperties.vmVendor().orElse(Optionals.missingValueDescriptor()),
-                    Units.durationAsHumanReadable(EnvironmentProperties.vmUptime())
+                    Units.durationAsHumanReadable(EnvironmentProperties.vmUptime()),
+                    EnvironmentProperties.vmPID().orElse(-1)
                 )
             )
         );
