@@ -53,6 +53,7 @@ public final class CustomHttpServer {
 
     public CustomHttpServer start(){
         server.start();
+        stopped = false;
         LOGGER.info(
                 "HttpServer started on port: {0}",
                 String.valueOf(server.getAddress().getPort())
@@ -67,7 +68,7 @@ public final class CustomHttpServer {
     public void stop(){
         if(!stopped){
             stopped = true;
-            var timerTask = new TimerTask() {
+            var stopTask = new TimerTask() {
                 @Override
                 public void run() {
                     server.stop(5);
@@ -75,7 +76,7 @@ public final class CustomHttpServer {
                 }
             };
             new Timer().schedule(
-                    timerTask,
+                    stopTask,
                     Duration.ofSeconds(5).toMillis()
             );
         }
